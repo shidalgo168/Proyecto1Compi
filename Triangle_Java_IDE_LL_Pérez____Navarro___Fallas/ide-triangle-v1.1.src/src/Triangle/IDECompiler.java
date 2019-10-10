@@ -53,6 +53,7 @@ public class IDECompiler {
         
         rootAST = parser.parseProgram();
         if (report.numErrors == 0) {
+            /* ssm_changes
             System.out.println("Contextual Analysis ...");
             Checker checker = new Checker(report);
             checker.check(rootAST);
@@ -66,6 +67,8 @@ public class IDECompiler {
                     success = true;
                 }
             }
+            */
+            success = true;
         }
 
         if (success)

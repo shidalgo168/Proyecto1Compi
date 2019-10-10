@@ -1,0 +1,4 @@
+let
+	const n ~ 1
+in
+	putint(n)
