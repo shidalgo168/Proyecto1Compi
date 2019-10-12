@@ -34,6 +34,11 @@ public interface Visitor {
   public abstract Object visitEmptyExpression(EmptyExpression ast, Object o);
   public abstract Object visitIfExpression(IfExpression ast, Object o);
   public abstract Object visitIntegerExpression(IntegerExpression ast, Object o);
+  public abstract Object visitLoopWhileCommand(LoopWhileCommand ast, Object o); //ssm_changes se agrega LOOP WHILE
+  public abstract Object visitLoopUntilCommand(LoopUntilCommand ast, Object o); //ssm_changes se agrega LOOP UNTIL
+  public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o); //ssm_changes se agrega LOOP DO WHILE
+  public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o); //ssm_changes se agrega LOOP DO UNTIL
+  public abstract Object visitLoopForCommand(LoopForCommand ast, Object o); //ssm_changes se agrega LOOP FOR
   public abstract Object visitLetExpression(LetExpression ast, Object o);
   public abstract Object visitRecordExpression(RecordExpression ast, Object o);
   public abstract Object visitUnaryExpression(UnaryExpression ast, Object o);

@@ -73,21 +73,21 @@ final class Token extends Object {
     DO			= 7,
     ELSE		         = 8,
     END			= 9,
-    FOR                   =10, //ssm_changes Se a�ade la palabra reservada FOR 
+    FOR                   =10, //ssm_changes Se agrega la palabra reservada FOR 
     FUNC		        = 11,
     IF			= 12,
     IN			= 13,
     LET			= 14,
-    LOOP                  = 15, //ssm_changes Se a�ade la palabra reservada LOOP 
+    LOOP                  = 15, //ssm_changes Se agrega la palabra reservada LOOP 
     OF			= 16,
     PROC	             	= 17,
     RECORD		= 18,
-    REPEAT                =19, //ssm_changes Se a�ade la palabra reservada REPEAT
-    SKIP                  =20, //ssm_changes Se a�ade la palabra reservada SKIP
+    REPEAT                =19, //ssm_changes Se agrega la palabra reservada REPEAT
+    SKIP                  =20, //ssm_changes Se agrega la palabra reservada SKIP
     THEN                  = 21,
-    TO                    =22,     //ssm_changes Se a�ade la palabra reservada TO
+    TO                    =22,     //ssm_changes Se agrega la palabra reservada TO
     TYPE		         = 23,
-    UNTIL                 =24,  //ssm_changes Se a�ade la palabra reservada UNTIL     
+    UNTIL                 =24,  //ssm_changes Se agrega la palabra reservada UNTIL     
     VAR			= 25,
     WHILE		= 26,
 
@@ -122,19 +122,19 @@ final class Token extends Object {
     "do",
     "else",
     "end",
-    "for",          //ssm_changes Se a�ade la palabra reservada FOR
+    "for",          //ssm_changes Se agrega la palabra reservada FOR
     "func",
     "if",
     "in",
     "let",
-    "loop",         //ssm_changes Se a�ade la palabra reservada LOOP
+    "loop",         //ssm_changes Se agrega la palabra reservada LOOP
     "of",
     "proc",
     "record",
-    "repeat",       //ssm_changes Se a�ade la palabra reservada REPEAT
-    "skip",         //ssm_changes Se a�ade la palabra reservada SKIP
+    "repeat",       //ssm_changes Se agrega la palabra reservada REPEAT
+    "skip",         //ssm_changes Se agrega la palabra reservada SKIP
     "then",
-    "to",           //ssm_changes Se a�ade la palabra reservada TO
+    "to",           //ssm_changes Se agrega la palabra reservada TO
     "type",
     "until",        //ssm_changes Se a�ade la palabra reservada UNTIL
     "var",
