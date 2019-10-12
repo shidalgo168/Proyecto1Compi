@@ -100,6 +100,7 @@ final class Token extends Object {
     IS			= 32,
 
     // brackets...
+    LPAREN		= 33,      
     RPAREN		= 34,
     LBRACKET	= 35,
     RBRACKET	= 36,
