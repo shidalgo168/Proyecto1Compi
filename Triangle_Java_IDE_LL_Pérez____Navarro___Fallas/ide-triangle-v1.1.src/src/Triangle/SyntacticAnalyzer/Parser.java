@@ -293,11 +293,12 @@ public class Parser {
       }
       break;
 
-    case Token.BEGIN:
+    /* ssm_changes // case Token.BEGIN:
       acceptIt();
       commandAST = parseCommand();
       accept(Token.END);
       break;
+    */ 
 
     case Token.LET:
       {
@@ -338,7 +339,7 @@ public class Parser {
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    case Token.EOT:
+    // case Token.EOT: // ssm_changes
 
       finish(commandPos);
       commandAST = new EmptyCommand(commandPos);

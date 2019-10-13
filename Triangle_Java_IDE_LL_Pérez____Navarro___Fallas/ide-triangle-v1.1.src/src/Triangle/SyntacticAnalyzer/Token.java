@@ -40,7 +40,7 @@ final class Token extends Object {
         }
       }
     } else
-      this.kind = kind;
+        this.kind = kind;
 
     this.spelling = spelling;
     this.position = position;
@@ -67,64 +67,82 @@ final class Token extends Object {
     OPERATOR	= 3,
 
     // reserved words - must be in alphabetical order...
-    ARRAY		= 4,
-    BEGIN		= 5,
+        AND             = 4, //ssm_changes added lines = tabbed lines
+    ARRAY		= 5,
     CONST		= 6,
     DO			= 7,
     ELSE		= 8,
     END			= 9,
-    FUNC		= 10,
-    IF			= 11,
-    IN			= 12,
-    LET			= 13,
-    OF			= 14,
-    PROC		= 15,
-    RECORD		= 16,
-    THEN		= 17,
-    TYPE		= 18,
-    VAR			= 19,
-    WHILE		= 20,
+        FOR             = 10,
+    FUNC		= 11,
+    IF			= 12,
+    IN			= 13,
+        INIT            = 14,
+    LET			= 15,
+        LOCAL           = 16,
+        LOOP            = 17,
+    OF			= 18,
+    PROC		= 19,
+    RECORD		= 20,
+        RECURSIVE       = 21,
+        REPEAT          = 22,
+        SKIP		= 23, 
+    THEN		= 24,
+        TO              = 25,
+    TYPE		= 26,
+        UNTIL           = 27,
+    VAR			= 28,
+    WHILE		= 29,
 
     // punctuation...
-    DOT			= 21,
-    COLON		= 22,
-    SEMICOLON	= 23,
-    COMMA		= 24,
-    BECOMES		= 25,
-    IS			= 26,
+    DOT			= 30,
+    COLON		= 31,
+    SEMICOLON           = 32,
+    COMMA		= 33,
+    BECOMES		= 34,
+    IS			= 35,
 
     // brackets...
-    LPAREN		= 27,
-    RPAREN		= 28,
-    LBRACKET	= 29,
-    RBRACKET	= 30,
-    LCURLY		= 31,
-    RCURLY		= 32,
+    LPAREN		= 36,
+    RPAREN		= 37,
+    LBRACKET            = 38,
+    RBRACKET            = 39,
+    LCURLY		= 40,
+    RCURLY		= 41,
 
     // special tokens...
-    EOT			= 33,
-    ERROR		= 34;
-
+    ERROR		= 42,
+          EOT           = 43;
+  
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",
     "<identifier>",
     "<operator>",
+        "and", //ssm_changes added lines = tabbed lines
     "array",
-    "begin",
     "const",
     "do",
     "else",
     "end",
+        "for",
     "func",
     "if",
     "in",
+        "init",
     "let",
+        "local",
+        "loop",
     "of",
     "proc",
     "record",
+        "recursive",
+        "repeat",
+        "skip", 
     "then",
+        "to",
     "type",
+        "until",
     "var",
     "while",
     ".",
@@ -139,11 +157,11 @@ final class Token extends Object {
     "]",
     "{",
     "}",
-    "",
+    //"", //ssm_changes
     "<error>"
   };
 
-  private final static int	firstReservedWord = Token.ARRAY,
+  private final static int	firstReservedWord = Token.AND, // ssm_changes (ARRAY)
   				lastReservedWord  = Token.WHILE;
 
 }
