@@ -108,8 +108,9 @@ final class Token extends Object {
     RCURLY		= 38,
 
     // special tokens...
-    EOT			= 33,
-    ERROR		= 34;
+          
+    //EOT	         = 33, ssm_changes 
+    ERROR		= 33;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -151,7 +152,7 @@ final class Token extends Object {
     "]",
     "{",
     "}",
-    "",
+    //"", ssm_changes
     "<error>"
   };
 

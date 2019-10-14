@@ -152,7 +152,8 @@ public class Parser {
         try {
             Command cAST = parseCommand();
             programAST = new Program(cAST, previousTokenPosition);
-            if (currentToken.kind != Token.EOT) {
+           // if (currentToken.kind != Token.EOT) ssm_changes
+            if (currentToken.kind != Token.SKIP){
                 syntacticError("\"%\" not expected after end of program",
                         currentToken.spelling);
             }
@@ -380,6 +381,7 @@ public class Parser {
               commandAST = new LetCommand(dAST, cAST, commandPos);
             }
             break;*/
+            //ssm_changes se cambia el let
             case Token.LET: {
                 acceptIt();
                 Declaration dAST = parseDeclaration();
@@ -390,7 +392,7 @@ public class Parser {
                 commandAST = new LetCommand(dAST, cAST, commandPos);
             }
             break;
-
+            //ssm_changes se agrega el end al if
             case Token.IF: {
                 acceptIt();
                 Expression eAST = parseExpression();
@@ -418,11 +420,12 @@ public class Parser {
             case Token.END:
             case Token.ELSE:
             case Token.IN:
+            /* ssm_changes
             case Token.EOT:
 
                 finish(commandPos);
                 commandAST = new EmptyCommand(commandPos);
-                break;
+                break;*/
 
             default:
                 syntacticError("\"%\" cannot start a command",
@@ -457,7 +460,7 @@ public class Parser {
                 expressionAST = new LetExpression(dAST, eAST, expressionPos);
             }
             break;
-
+         
             case Token.IF: {
                 acceptIt();
                 Expression e1AST = parseExpression();

@@ -176,9 +176,10 @@ public final class Scanner {
       takeIt();
       return Token.RCURLY;
 
-    case SourceFile.EOT:
-      return Token.EOT;
-
+    /*case SourceFile.EOT: ssm_changes
+      return Token.EOT;*/
+      case SourceFile.EOT:
+      return Token.SKIP;
     default:
       takeIt();
       return Token.ERROR;
