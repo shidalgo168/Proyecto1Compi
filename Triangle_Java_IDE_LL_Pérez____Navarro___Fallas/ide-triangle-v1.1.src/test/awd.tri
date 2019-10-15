@@ -1,4 +1,11 @@
 let
-	const n ~ 1
+  recursive
+      func F () : Integer ~ 10
+    and
+      proc P (x : Integer) ~
+        putint (x * 2) end
+    and
+      func F () : Integer ~ 10
+  end
 in
-	putint(n)
+  P (F())
