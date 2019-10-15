@@ -110,7 +110,8 @@ final class Token extends Object {
     // special tokens...
           
     //EOT	         = 33, ssm_changes 
-    ERROR		= 33;
+    ERROR		= 39,
+    EOT                     =40;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -151,7 +152,7 @@ final class Token extends Object {
     "[",
     "]",
     "{",
-    "}",
+    "}", 
     //"", ssm_changes
     "<error>"
   };
