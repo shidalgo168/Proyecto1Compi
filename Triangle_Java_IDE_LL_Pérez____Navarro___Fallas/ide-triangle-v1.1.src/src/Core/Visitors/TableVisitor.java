@@ -36,6 +36,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LocalDeclaration; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForCommand;
@@ -53,6 +54,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -146,6 +148,35 @@ public class TableVisitor implements Visitor {
 
         return (null);
     }
+    
+    //ssm_changes
+        @Override
+    public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
+        return null;
+    }
+    
+    //ssm_changes
+    @Override
+    public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
+        return null;
+    }
+
+    //ssm_changes
+    @Override
+    public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        return null;
+    }
+    //ssm_changes
+    @Override
+    public Object visitLoopForCommand(LoopForCommand ast, Object o) {
+        return null;
+    }
+    //ssm_changes
+    @Override
+    public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        return null;
+    }
+    
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -270,6 +301,12 @@ public class TableVisitor implements Visitor {
         return (null);
     }
 
+    //ssm_changes add method
+    public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
+        //beyond the scope of project
+        return (null);
+    }
+
     public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
         try {
             addIdentifier(ast.I.spelling, "KnownRoutine",
@@ -283,6 +320,12 @@ public class TableVisitor implements Visitor {
         ast.FPS.visit(this, null);
         ast.C.visit(this, null);
 
+        return (null);
+    }
+
+    //ssm_changes add method
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        //beyond the scope of project
         return (null);
     }
 
@@ -635,28 +678,7 @@ public class TableVisitor implements Visitor {
     private DefaultTableModel model;
     // </editor-fold>
 
-    @Override
-    public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
-        return null;
-    }
 
-    @Override
-    public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
-        return null;
-    }
 
-    @Override
-    public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
-        return null;
-    }
 
-    @Override
-    public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
-        return null;
-    }
-
-    @Override
-    public Object visitLoopForCommand(LoopForCommand ast, Object o) {
-        return null;
-    }
 }

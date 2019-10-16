@@ -40,7 +40,7 @@ final class Token extends Object {
         }
       }
     } else
-      this.kind = kind;
+        this.kind = kind;
 
     this.spelling = spelling;
     this.position = position;
@@ -67,78 +67,82 @@ final class Token extends Object {
     OPERATOR	= 3,
 
     // reserved words - must be in alphabetical order...
-    ARRAY		= 4,
-    BEGIN		= 5,
+        AND             = 4, //ssm_changes added lines = tabbed lines
+    ARRAY		= 5,
     CONST		= 6,
     DO			= 7,
-    ELSE		         = 8,
+    ELSE		= 8,
     END			= 9,
-    FOR                   =10, //ssm_changes Se agrega la palabra reservada FOR 
-    FUNC		        = 11,
+        FOR             = 10,
+    FUNC		= 11,
     IF			= 12,
     IN			= 13,
-    LET			= 14,
-    LOOP                  = 15, //ssm_changes Se agrega la palabra reservada LOOP 
-    OF			= 16,
-    PROC	             	= 17,
-    RECORD		= 18,
-    REPEAT                =19, //ssm_changes Se agrega la palabra reservada REPEAT
-    SKIP                  =20, //ssm_changes Se agrega la palabra reservada SKIP
-    THEN                  = 21,
-    TO                    =22,     //ssm_changes Se agrega la palabra reservada TO
-    TYPE		         = 23,
-    UNTIL                 =24,  //ssm_changes Se agrega la palabra reservada UNTIL     
-    VAR			= 25,
-    WHILE		= 26,
+        INIT            = 14,
+    LET			= 15,
+        LOCAL           = 16,
+        LOOP            = 17,
+    OF			= 18,
+    PROC		= 19,
+    RECORD		= 20,
+        RECURSIVE       = 21,
+        REPEAT          = 22,
+        SKIP		= 23, 
+    THEN		= 24,
+        TO              = 25,
+    TYPE		= 26,
+        UNTIL           = 27,
+    VAR			= 28,
+    WHILE		= 29,
 
     // punctuation...
-    DOT			= 27,
-    COLON		= 28,
-    SEMICOLON	= 29,
-    COMMA		= 30,
-    BECOMES		= 31,
-    IS			= 32,
+    DOT			= 30,
+    COLON		= 31,
+    SEMICOLON           = 32,
+    COMMA		= 33,
+    BECOMES		= 34,
+    IS			= 35,
 
     // brackets...
-    LPAREN		= 33,      
-    RPAREN		= 34,
-    LBRACKET	= 35,
-    RBRACKET	= 36,
-    LCURLY		= 37,
-    RCURLY		= 38,
+    LPAREN		= 36,
+    RPAREN		= 37,
+    LBRACKET            = 38,
+    RBRACKET            = 39,
+    LCURLY		= 40,
+    RCURLY		= 41,
 
     // special tokens...
-          
-    //EOT	         = 33, ssm_changes 
-    ERROR		= 39,
-    EOT                     =40;
-
+    ERROR		= 42,
+          EOT           = 43;
+  
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",
     "<identifier>",
     "<operator>",
+        "and", //ssm_changes added lines = tabbed lines
     "array",
-    "begin",
     "const",
     "do",
     "else",
     "end",
-    "for",          //ssm_changes Se agrega la palabra reservada FOR
+        "for",
     "func",
     "if",
     "in",
+        "init",
     "let",
-    "loop",         //ssm_changes Se agrega la palabra reservada LOOP
+        "local",
+        "loop",
     "of",
     "proc",
     "record",
-    "repeat",       //ssm_changes Se agrega la palabra reservada REPEAT
-    "skip",         //ssm_changes Se agrega la palabra reservada SKIP
+        "recursive",
+        "repeat",
+        "skip", 
     "then",
-    "to",           //ssm_changes Se agrega la palabra reservada TO
+        "to",
     "type",
-    "until",        //ssm_changes Se a�ade la palabra reservada UNTIL
+        "until",
     "var",
     "while",
     ".",
@@ -152,12 +156,12 @@ final class Token extends Object {
     "[",
     "]",
     "{",
-    "}", 
-    //"", ssm_changes
+    "}",
+    //"", //ssm_changes
     "<error>"
   };
 
-  private final static int	firstReservedWord = Token.ARRAY,
+  private final static int	firstReservedWord = Token.AND, // ssm_changes (ARRAY)
   				lastReservedWord  = Token.WHILE;
 
 }
