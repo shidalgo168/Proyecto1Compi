@@ -2,7 +2,6 @@
  * IDE-Triangle v1.0
  * TableDetails.java
  */
-
 package Core.Visitors;
 
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
@@ -38,6 +37,11 @@ import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopForCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -81,67 +85,98 @@ import Triangle.CodeGenerator.UnknownValue;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Implements the Triangle Visitor interface, which is used to
- * visit an entire AST. 
+ * Implements the Triangle Visitor interface, which is used to visit an entire
+ * AST.
  *
  * Generates a DefaultTableModel, used to draw a Jable.
  *
- * @author Luis Leopoldo Pérez <luiperpe@ns.isi.ulatina.ac.cr>
+ * @author Luis Leopoldo Pï¿½rez <luiperpe@ns.isi.ulatina.ac.cr>
  */
 public class TableVisitor implements Visitor {
-    
-    /** Creates a new instance of TableDetails */
-    public TableVisitor() {        
+
+    /**
+     * Creates a new instance of TableDetails
+     */
+    public TableVisitor() {
     }
 
-  // <editor-fold defaultstate="collapsed" desc=" Commands ">
-  // Commands
-  public Object visitAssignCommand(AssignCommand ast, Object o) { 
-      ast.V.visit(this, null);
-      ast.E.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitCallCommand(CallCommand ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.APS.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitEmptyCommand(EmptyCommand ast, Object o) { 
-      return(null);
-  }
-  
-  public Object visitIfCommand(IfCommand ast, Object o) { 
-      ast.E.visit(this, null);
-      ast.C1.visit(this, null);
-      ast.C2.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitLetCommand(LetCommand ast, Object o) {     
-      ast.D.visit(this, null);
-      ast.C.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitSequentialCommand(SequentialCommand ast, Object o) { 
-      ast.C1.visit(this, null);
-      ast.C2.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitWhileCommand(WhileCommand ast, Object o) { 
-      ast.E.visit(this, null);
-      ast.C.visit(this, null);
-      
-      return(null);
-  }
+    // <editor-fold defaultstate="collapsed" desc=" Commands ">
+    // Commands
+    public Object visitAssignCommand(AssignCommand ast, Object o) {
+        ast.V.visit(this, null);
+        ast.E.visit(this, null);
+
+        return (null);
+    }
+
+    public Object visitCallCommand(CallCommand ast, Object o) {
+        ast.I.visit(this, null);
+        ast.APS.visit(this, null);
+
+        return (null);
+    }
+
+    public Object visitEmptyCommand(EmptyCommand ast, Object o) {
+        return (null);
+    }
+
+    public Object visitIfCommand(IfCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+
+        return (null);
+    }
+
+    public Object visitLetCommand(LetCommand ast, Object o) {
+        ast.D.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
+    }
+
+    public Object visitSequentialCommand(SequentialCommand ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+
+        return (null);
+    }
+
+    public Object visitWhileCommand(WhileCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
+    }
+    
+    //ssm_changes
+        @Override
+    public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
+        return null;
+    }
+    
+    //ssm_changes
+    @Override
+    public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
+        return null;
+    }
+
+    //ssm_changes
+    @Override
+    public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        return null;
+    }
+    //ssm_changes
+    @Override
+    public Object visitLoopForCommand(LoopForCommand ast, Object o) {
+        return null;
+    }
+    //ssm_changes
+    @Override
+    public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        return null;
+    }
+    
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -605,35 +640,39 @@ public class TableVisitor implements Visitor {
      */
     private void addIdentifier(String name, String type, int size, int level, int displacement, int value) {
         boolean exists = false;
-        
-        for (int i=0;(i<model.getRowCount() && !exists);i++)
-            if (((String)model.getValueAt(i, 0)).compareTo(name) == 0)
+
+        for (int i = 0; (i < model.getRowCount() && !exists); i++) {
+            if (((String) model.getValueAt(i, 0)).compareTo(name) == 0) {
                 exists = true;
-        
+            }
+        }
+
         if (!exists) {
-            model.addRow(new String[] {name, 
-                    type, 
-                    String.valueOf(size), 
-                    (level<0?" ":String.valueOf(level)), 
-                    (displacement<0?" ":String.valueOf(displacement)), 
-                    (value<0?" ":String.valueOf(value))});
+            model.addRow(new String[]{name,
+                type,
+                String.valueOf(size),
+                (level < 0 ? " " : String.valueOf(level)),
+                (displacement < 0 ? " " : String.valueOf(displacement)),
+                (value < 0 ? " " : String.valueOf(value))});
         }
     }
-    
-    
+
     /**
      * Returns the filled table model.
      */
     public DefaultTableModel getTable(Program ast) {
-        model = new DefaultTableModel((new String[] {"Name", "Type", "Size", "Level", "Displacement", "Value"}), 0);
+        model = new DefaultTableModel((new String[]{"Name", "Type", "Size", "Level", "Displacement", "Value"}), 0);
         visitProgram(ast, null);
-        
-        return(model);
+
+        return (model);
     }
-    
+
     // </editor-fold>
-    
-  // <editor-fold defaultstate="collapsed" desc=" Attributes ">
+    // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private DefaultTableModel model;
     // </editor-fold>
+
+
+
+
 }

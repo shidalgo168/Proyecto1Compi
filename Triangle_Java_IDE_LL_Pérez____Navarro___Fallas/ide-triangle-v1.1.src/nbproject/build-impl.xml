@@ -568,6 +568,9 @@ is divided into following sections:
                         <propertyref prefix="test-sys-prop."/>
                         <mapper from="test-sys-prop.*" to="*" type="glob"/>
                     </syspropertyset>
+                    <classpath>
+                        <path path="${run.test.classpath}"/>
+                    </classpath>
                     <formatter type="brief" usefile="false"/>
                     <formatter type="xml"/>
                     <jvmarg value="-ea"/>
@@ -786,6 +789,16 @@ is divided into following sections:
                     <classpath>
                         <path path="@{classpath}"/>
                     </classpath>
+                    <modulepath>
+                        <path path="@{modulepath}"/>
+                    </modulepath>
+                    <upgrademodulepath>
+                        <path path="@{upgrademodulepath}"/>
+                    </upgrademodulepath>
+                    <jvmarg value="-Dfile.encoding=${runtime.encoding}"/>
+                    <redirector errorencoding="${runtime.encoding}" inputencoding="${runtime.encoding}" outputencoding="${runtime.encoding}"/>
+                    <jvmarg line="${run.jvmargs}"/>
+                    <jvmarg line="${run.jvmargs.ide}"/>
                     <syspropertyset>
                         <propertyref prefix="run-sys-prop."/>
                         <mapper from="run-sys-prop.*" to="*" type="glob"/>
@@ -795,7 +808,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
     </target>
-    <target name="-init-macrodef-java">
+    <target depends="-init-source-module-properties" name="-init-macrodef-java-without-module" unless="modules.supported.internal">
         <macrodef name="java" uri="http://www.netbeans.org/ns/j2se-project/1">
             <attribute default="${main.class}" name="classname"/>
             <attribute default="${run.classpath}" name="classpath"/>

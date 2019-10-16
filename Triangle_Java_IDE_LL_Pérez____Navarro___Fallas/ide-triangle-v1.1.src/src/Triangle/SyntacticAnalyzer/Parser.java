@@ -50,6 +50,11 @@ import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopForCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -301,18 +306,98 @@ public class Parser {
       accept(Token.END);
       break;
     */
-
+      
+ // ssm_changes se a�ade la alternativa SKIP  
+            case Token.SKIP:
+                acceptIt();
+                finish(commandPos);
+                commandAST = new EmptyCommand(commandPos);
+                break;
+            // ssm_changes se a�ade la alternativa LOOP...  
+            case Token.LOOP:
+                acceptIt();
+                switch (currentToken.kind) {
+                    case Token.WHILE: {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.REPEAT);
+                        finish(commandPos);
+                        commandAST = new LoopWhileCommand(eAST, cAST, commandPos);
+                    }
+                    break;
+                    case Token.UNTIL: {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.REPEAT);
+                        finish(commandPos);
+                        commandAST = new LoopUntilCommand(eAST, cAST, commandPos);
+                    }
+                    break;
+                    case Token.DO: {
+                        acceptIt();
+                        Command cAST = parseCommand();
+                        switch (currentToken.kind) {
+                            case Token.WHILE: {
+                                acceptIt();
+                                Expression eAST = parseExpression();
+                                accept(Token.REPEAT);
+                                finish(commandPos);
+                                commandAST = new LoopDoWhileCommand(eAST, cAST, commandPos);
+                            }
+                            break;
+                            case Token.UNTIL: {
+                                acceptIt();
+                                Expression eAST = parseExpression();
+                                accept(Token.REPEAT);
+                                finish(commandPos);
+                                commandAST = new LoopDoUntilCommand(eAST, cAST, commandPos);
+                            }
+                            break;
+                            default:
+                                syntacticError("\"%\" expected one of the following words: [while, until]",
+                                        currentToken.spelling);
+                                break;
+                        }
+                    }
+                    break;
+                    case Token.FOR: {
+                        acceptIt();
+                        Identifier iAST = parseIdentifier();
+                        accept(Token.IS);
+                        Expression e1AST = parseExpression();
+                        accept(Token.TO);
+                        Expression e2AST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.REPEAT);
+                        Declaration dAST = new ConstDeclaration(iAST, e1AST, commandPos);
+                        finish(commandPos);
+                        commandAST = new LoopForCommand(dAST, e2AST, cAST, commandPos);
+                    }
+                    break;
+                    default:
+                        syntacticError("\"%\" expected one of the following words: [while, until, do, for]",
+                                currentToken.spelling);
+                        break;
+                }
+                break;
+    //ssm_changes            
     case Token.LET:
       {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
         Command cAST = parseSingleCommand();
+        accept(Token.END);
         finish(commandPos);
         commandAST = new LetCommand(dAST, cAST, commandPos);
       }
       break;
-
+ //ssm_changes
     case Token.IF:
       {
         acceptIt();
@@ -325,8 +410,8 @@ public class Parser {
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
       }
       break;
-
-    case Token.WHILE:
+    //ssm_changes
+    /*case Token.WHILE:
       {
         acceptIt();
         Expression eAST = parseExpression();
@@ -335,7 +420,7 @@ public class Parser {
         finish(commandPos);
         commandAST = new WhileCommand(eAST, cAST, commandPos);
       }
-      break;
+      break;*/
 
     case Token.SEMICOLON:
     case Token.END:
@@ -371,13 +456,14 @@ public class Parser {
     start (expressionPos);
 
     switch (currentToken.kind) {
-
+    //ssm_changes
     case Token.LET:
       {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
         Expression eAST = parseExpression();
+        accept(Token.END);
         finish(expressionPos);
         expressionAST = new LetExpression(dAST, eAST, expressionPos);
       }

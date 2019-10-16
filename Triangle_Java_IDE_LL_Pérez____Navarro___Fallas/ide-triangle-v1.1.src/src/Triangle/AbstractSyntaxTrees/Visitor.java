@@ -22,6 +22,11 @@ public interface Visitor {
   public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);
   public abstract Object visitIfCommand(IfCommand ast, Object o);
   public abstract Object visitLetCommand(LetCommand ast, Object o);
+  public abstract Object visitLoopWhileCommand(LoopWhileCommand ast, Object o); //ssm_changes se agrega LOOP WHILE
+  public abstract Object visitLoopUntilCommand(LoopUntilCommand ast, Object o); //ssm_changes se agrega LOOP UNTIL
+  public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o); //ssm_changes se agrega LOOP DO WHILE
+  public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o); //ssm_changes se agrega LOOP DO UNTIL
+  public abstract Object visitLoopForCommand(LoopForCommand ast, Object o); //ssm_changes se agrega LOOP FOR  
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
 
