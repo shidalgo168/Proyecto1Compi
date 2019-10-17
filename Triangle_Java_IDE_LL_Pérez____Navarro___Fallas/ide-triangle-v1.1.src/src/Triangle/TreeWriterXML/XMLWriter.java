@@ -28,7 +28,7 @@ public class XMLWriter {
             //XML header
             fileWriter.write("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?>\n");
 
-            WriterVisitor layout = new WriterVisitor(fileWriter);
+            XMLWriterVisitor layout = new XMLWriterVisitor(fileWriter);
             ast.visit(layout, null);
 
             fileWriter.close();

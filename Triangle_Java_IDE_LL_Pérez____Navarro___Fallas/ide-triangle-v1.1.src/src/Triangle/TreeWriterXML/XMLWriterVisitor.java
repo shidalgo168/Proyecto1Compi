@@ -82,12 +82,12 @@ import java.io.IOException;
  *
  * @author Marco Gamboa
  */
-public class WriterVisitor implements Visitor{
+public class XMLWriterVisitor implements Visitor{
 
     private FileWriter fileWriter;
     private int qTabs;
 
-    WriterVisitor(FileWriter fileWriter) {
+    XMLWriterVisitor(FileWriter fileWriter) {
         this.fileWriter = fileWriter;
         qTabs=0;
     }
@@ -155,16 +155,10 @@ public class WriterVisitor implements Visitor{
         return null;
     }
 
-    @Override
+   /* @Override
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
-        writeLineXML("<WhileCommand>");
-        qTabs++;
-        ast.E.visit(this, null);
-        ast.C.visit(this, null);
-        qTabs--;
-        writeLineXML("</WhileCommand>");
         return null;
-    }
+    }*/
 
 
     // Expressions
