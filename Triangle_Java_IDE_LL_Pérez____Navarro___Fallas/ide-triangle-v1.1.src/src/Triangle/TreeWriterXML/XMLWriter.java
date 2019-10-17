@@ -25,7 +25,7 @@ public class XMLWriter {
                 file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
 
-            //HTML header
+            //XML header
             fileWriter.write("<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?>\n");
 
             WriterVisitor layout = new WriterVisitor(fileWriter);
@@ -35,7 +35,7 @@ public class XMLWriter {
 
 
         } catch (IOException e) {
-            System.err.println("Error while creating file for print the AST");
+            System.err.println("Error while creating xml file for print the AST");
             e.printStackTrace();
         }
     }    

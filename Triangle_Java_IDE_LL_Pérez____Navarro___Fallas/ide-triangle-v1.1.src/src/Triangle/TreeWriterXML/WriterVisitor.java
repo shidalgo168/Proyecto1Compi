@@ -798,7 +798,8 @@ public class WriterVisitor implements Visitor{
     
     private void writeLineXML(String line) {
         try {          
-            fileWriter.write("\t".repeat(qTabs));
+            if(qTabs>=0)
+                fileWriter.write("\t".repeat(qTabs));
             fileWriter.write(line);
             fileWriter.write('\n');
         } catch (IOException e) {
@@ -809,7 +810,7 @@ public class WriterVisitor implements Visitor{
     
     /*
      * Convert the characters "<" & "<=" to their equivalents in html
-     */
+     */ 
     private String transformOperator(String operator) {
         if (operator.compareTo("<") == 0)
             return "&lt;";
