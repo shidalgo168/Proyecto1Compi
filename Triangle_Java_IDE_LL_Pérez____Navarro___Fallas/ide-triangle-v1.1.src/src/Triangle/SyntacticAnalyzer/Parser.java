@@ -307,12 +307,13 @@ public class Parser {
       break;
     */
       
- // ssm_changes se añade la alternativa SKIP  
+           // ssm_changes se añade la alternativa SKIP  
             case Token.SKIP:
                 acceptIt();
                 finish(commandPos);
                 commandAST = new EmptyCommand(commandPos);
                 break;
+                
             // ssm_changes se añade la alternativa LOOP...  
             case Token.LOOP:
                 acceptIt();
@@ -406,6 +407,7 @@ public class Parser {
         Command c1AST = parseSingleCommand();
         accept(Token.ELSE);
         Command c2AST = parseSingleCommand();
+        accept(Token.END);
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
       }
@@ -428,9 +430,9 @@ public class Parser {
     case Token.IN:
     // case Token.EOT: // ssm_changes
 
-      finish(commandPos);
+      /*finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
-      break;
+      break;*/
 
     default:
       syntacticError("\"%\" cannot start a command",
@@ -477,6 +479,7 @@ public class Parser {
         Expression e2AST = parseExpression();
         accept(Token.ELSE);
         Expression e3AST = parseExpression();
+        accept(Token.END);
         finish(expressionPos);
         expressionAST = new IfExpression(e1AST, e2AST, e3AST, expressionPos);
       }

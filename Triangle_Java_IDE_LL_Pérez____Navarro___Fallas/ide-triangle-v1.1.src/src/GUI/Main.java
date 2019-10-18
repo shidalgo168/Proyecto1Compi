@@ -620,9 +620,9 @@ public class Main extends javax.swing.JFrame {
                 //ssm_changes/ output.setDelegate(delegateTAMCode);
                 //ssm_changes/ disassembler.Disassemble(desktopPane.getSelectedFrame().getTitle().replace(".tri", ".tam"));
                 ((FileFrame)desktopPane.getSelectedFrame()).setTree((DefaultMutableTreeNode)treeVisitor.visitProgram(compiler.getAST(), null));
-                ((FileFrame)desktopPane.getSelectedFrame()).setTable(tableVisitor.getTable(compiler.getAST()));
                 //ssm_changes
                 XMLWriter.write(compiler.getAST(),desktopPane.getSelectedFrame().getTitle().replace(".tri", ".xml"));        
+                ((FileFrame)desktopPane.getSelectedFrame()).setTable(tableVisitor.getTable(compiler.getAST()));
                 
                 runMenuItem.setEnabled(true);
                 buttonRun.setEnabled(true);
