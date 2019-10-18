@@ -15,14 +15,18 @@
 package Triangle.SyntacticAnalyzer;
 
 
+
+
 public final class Scanner {
-
+  
   private SourceFile sourceFile;
-  private boolean debug;
-
   private char currentChar;
+  private boolean debug;
   private StringBuffer currentSpelling;
   private boolean currentlyScanningToken;
+  private String htmlText; //stores html text
+  private String comment; //stores the comment
+
 
   private boolean isLetter(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -44,10 +48,17 @@ public final class Scanner {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+   public String getHtmlText(){
+       return htmlText;
+   }
+   
   public Scanner(SourceFile source) {
+
     sourceFile = source;
     currentChar = sourceFile.getSource();
     debug = false;
+    
+    
   }
 
   public void enableDebugging() {
@@ -69,21 +80,31 @@ public final class Scanner {
     switch (currentChar) {
     case '!':
       {
+        comment += currentChar;
         takeIt();
-        while ((currentChar != SourceFile.EOL) && (currentChar != SourceFile.EOT))
-          takeIt();
-        if (currentChar == SourceFile.EOL)
-          takeIt();
+        while ((currentChar != SourceFile.EOL) && (currentChar != SourceFile.EOT)){
+            comment += currentChar;
+            takeIt();
+        }
+        
+        if (currentChar == SourceFile.EOL){
+            comment += "<br>";
+            takeIt();
+        }
+        insertHtmlText(comment,44);
+        comment = "";
       }
       break;
 
     case ' ': case '\n': case '\r': case '\t':
-      takeIt();
+        insertHtmlText(String.valueOf(currentChar),45);
+        takeIt();
       break;
     }
   }
 
-  private int scanToken() {
+  private int scanToken()  {
+    
 
     switch (currentChar) {
 
@@ -109,6 +130,9 @@ public final class Scanner {
       takeIt();
       while (isDigit(currentChar))
         takeIt();
+      
+     
+      
       return Token.INTLITERAL;
 
     case '+':  case '-':  case '*': case '/':  case '=':
@@ -207,9 +231,72 @@ public final class Scanner {
 
     pos.finish = sourceFile.getCurrentLine();
     tok = new Token(kind, currentSpelling.toString(), pos);
+    insertHtmlText(currentSpelling.toString(), tok.kind); //insert reserved word into html
     if (debug)
       System.out.println(tok);
     return tok;
   }
+  
+  // inserts the htmlText into the html
+  public void insertHtmlText(String htmlT, int tokenType){
+       switch(tokenType) {
+           
+          //insert reserved words 
+          case Token.ARRAY:  
+          case Token.CONST:  
+          case Token.DO:
+          case Token.ELSE:  
+          case Token.END:   
+          case Token.FUNC:
+          case Token.IF:  
+          case Token.IN:  
+          case Token.INIT:  
+          case Token.LET:
+          case Token.OF:  
+          case Token.PROC:
+          case Token.RECORD:    
+          case Token.THEN:    
+          case Token.TYPE:  
+          case Token.VAR:  
+          case Token.WHILE: 
+              //faltan and, for, local, to, recursive, repeat, skip, to, until 
+              htmlText+=("<span class='reserved'>"+htmlT+"</span>");
+              break;
+              
+          //inser literals
+          case Token.CHARLITERAL:
+          case Token.INTLITERAL:  
+              htmlText+=("<span class='literal'>"+htmlT+"</span>");
+              break;
+              
+          //insert comments   
+          case 44:
+              htmlText+=("<span class='comment'>"+htmlT+"</span>");
+              break;
+              
+          //insert spaces 
+          case 45:
+            switch  (htmlT) {
+                case "\n":
+                    htmlText+="<br>";
+                    break;
+                case "\t":
+                    htmlText+="&ensp;";
+                    break;
+                case " ":
+                    htmlText+="&nbsp;";
+                    break;
+                case "null":
+                    break;
+                    
+                default:
+                    break;
+        }   
+          default:
+              htmlText+=htmlT;
+              break;
+      }
+   }
+    
 
 }
