@@ -51,6 +51,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -304,6 +305,11 @@ public final class Encoder implements Visitor {
         emit(Machine.RETURNop, valSize, 0, argsSize);
         patch(jumpAddr, nextInstrAddr);
         return new Integer(0);
+    }
+    
+    //ssm_changes add method TODO
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
+        return 0;
     }
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object o) {

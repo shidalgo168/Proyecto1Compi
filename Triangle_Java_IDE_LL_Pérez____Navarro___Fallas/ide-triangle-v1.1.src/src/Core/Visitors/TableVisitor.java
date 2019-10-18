@@ -31,6 +31,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration; // ssm_changes add
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -297,6 +298,12 @@ public class TableVisitor implements Visitor {
       ast.FPS.visit(this, null);
       ast.E.visit(this, null);
             
+      return(null);
+  }
+  
+  //ssm_changes add method
+  public Object visitInitDeclaration(InitDeclaration ast, Object o) {
+      //beyond the scope of project
       return(null);
   }
   

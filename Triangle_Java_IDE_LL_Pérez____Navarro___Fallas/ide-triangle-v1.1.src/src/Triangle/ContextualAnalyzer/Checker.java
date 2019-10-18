@@ -46,6 +46,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -324,6 +325,11 @@ public final class Checker implements Visitor {
             reporter.reportError("body of function \"%\" has wrong type",
                     ast.I.spelling, ast.E.position);
         }
+        return null;
+    }
+    
+    //ssm_changes add method TODO
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
         return null;
     }
 

@@ -1,0 +1,13 @@
+!"proc" Identifier "(" Formal-Parameter-Sequence ")" "~" cmd "end"
+
+!REGLAS DEL RECURSIVE
+! Proc-Funcs := Proc-Func ("and" Proc-Func)+
+! Minimo 2 declaraciones de este tipo
+! separados por la palabra reservada "and"
+
+let
+  proc P (x : Integer) ~
+    putint (x * 2) end
+in
+  P(6)
+end

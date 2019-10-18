@@ -1,0 +1,9 @@
+! "var" Identifier "init" Expression
+! prueba en la delcaracion del let
+
+let
+  var x init
+          let const y~4 in x+y end
+in
+  putint(x)
+end

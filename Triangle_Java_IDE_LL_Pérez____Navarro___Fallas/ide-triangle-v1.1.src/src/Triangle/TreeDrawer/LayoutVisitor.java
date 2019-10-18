@@ -43,6 +43,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -183,6 +184,11 @@ public class LayoutVisitor implements Visitor {
 
     public Object visitFuncDeclaration(FuncDeclaration ast, Object obj) {
         return layoutQuaternary("FuncDecl.", ast.I, ast.FPS, ast.T, ast.E);
+    }
+    
+    //ssm_changes add method TODO
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
+        return layoutBinary("InitDecl.", ast.I, ast.E);
     }
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object obj) {

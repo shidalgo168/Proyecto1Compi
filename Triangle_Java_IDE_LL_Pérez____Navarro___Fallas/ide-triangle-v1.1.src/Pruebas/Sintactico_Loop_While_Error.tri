@@ -1,0 +1,8 @@
+! "loop" "while" Expression "do" Command "repeat"
+
+loop while 2>1 do
+  x+1
+repeat
+
+! Expression en lugar de Command
+

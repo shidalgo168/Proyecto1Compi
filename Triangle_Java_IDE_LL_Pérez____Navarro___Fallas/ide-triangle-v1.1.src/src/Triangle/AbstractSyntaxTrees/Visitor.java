@@ -48,6 +48,7 @@ public interface Visitor {
   public abstract Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object o);
   public abstract Object visitConstDeclaration(ConstDeclaration ast, Object o);
   public abstract Object visitFuncDeclaration(FuncDeclaration ast, Object o);
+  public abstract Object visitInitDeclaration(InitDeclaration ast, Object o); //ssm_changes
   public abstract Object visitLocalDeclaration(LocalDeclaration ast, Object o); //ssm_changes
   public abstract Object visitProcDeclaration(ProcDeclaration ast, Object o);
   public abstract Object visitSequentialDeclaration(SequentialDeclaration ast, Object o);

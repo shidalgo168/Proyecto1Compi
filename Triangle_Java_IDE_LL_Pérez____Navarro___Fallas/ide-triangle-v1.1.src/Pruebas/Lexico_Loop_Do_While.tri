@@ -1,0 +1,9 @@
+! "loop" "do" Command "while" Expression "repeat"
+
+loop do
+
+    putint(1)
+
+  while true
+
+repeat

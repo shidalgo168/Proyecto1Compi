@@ -45,6 +45,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
@@ -307,13 +308,13 @@ public class Parser {
       break;
     */
       
- // ssm_changes se a�ade la alternativa SKIP  
+ // ssm_changes add SKIP  
             case Token.SKIP:
                 acceptIt();
                 finish(commandPos);
                 commandAST = new EmptyCommand(commandPos);
                 break;
-            // ssm_changes se a�ade la alternativa LOOP...  
+            // ssm_changes add LOOP  
             case Token.LOOP:
                 acceptIt();
                 switch (currentToken.kind) {
@@ -391,7 +392,7 @@ public class Parser {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
-        Command cAST = parseSingleCommand();
+        Command cAST = parseCommand();
         accept(Token.END);
         finish(commandPos);
         commandAST = new LetCommand(dAST, cAST, commandPos);
@@ -403,9 +404,10 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseSingleCommand();
+        Command c1AST = parseCommand();
         accept(Token.ELSE);
-        Command c2AST = parseSingleCommand();
+        Command c2AST = parseCommand();
+        accept(Token.END);
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
       }
@@ -426,11 +428,11 @@ public class Parser {
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    // case Token.EOT: // ssm_changes
+    /* case Token.EOT: // ssm_changes
 
       finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
-      break;
+      break;*/
 
     default:
       syntacticError("\"%\" cannot start a command",
@@ -733,9 +735,8 @@ public class Parser {
     break;
 
     default:
-      {
         declarationAST = parseSingleDeclaration();
-      }
+        break;
     }
     return declarationAST;
   }
@@ -773,7 +774,7 @@ public class Parser {
             acceptIt();
             Expression eAST = parseExpression();
             finish(declarationPos);
-            declarationAST = new ConstDeclaration(iAST, eAST, declarationPos); //TODO
+            declarationAST = new InitDeclaration(iAST, eAST, declarationPos);
         }
         else{
             syntacticError("\"%\" cannot start formal parameter", currentToken.spelling);

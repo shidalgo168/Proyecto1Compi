@@ -32,6 +32,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration; // ssm_changes add
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -145,7 +146,7 @@ public class TreeVisitor implements Visitor {
 
     //ssm_changes add method
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
-        return (createTernary("For Command", ast.C, ast.D, ast.E));
+        return (createTernary("For Command", ast.D, ast.E, ast.C));
     }    
     // </editor-fold>
 
@@ -208,6 +209,11 @@ public class TreeVisitor implements Visitor {
 
     public Object visitFuncDeclaration(FuncDeclaration ast, Object obj) {
         return (createQuaternary("Function Declaration", ast.I, ast.FPS, ast.T, ast.E));
+    }
+    
+    //ssm_changes add method
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
+        return (createBinary("Init Declaration", ast.I, ast.E));
     }
     
     //ssm_changes add method
