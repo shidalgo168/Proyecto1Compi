@@ -5,6 +5,7 @@
 
 package Triangle;
 
+import HTML.Generator.HtmlFile;
 import Triangle.CodeGenerator.Frame;
 import java.awt.event.ActionListener;
 import Triangle.SyntacticAnalyzer.SourceFile;
@@ -47,12 +48,18 @@ public class IDECompiler {
         System.out.println("Syntactic Analysis ...");
         SourceFile source = new SourceFile(sourceName);
         Scanner scanner = new Scanner(source);
+
         report = new IDEReporter();
         Parser parser = new Parser(scanner, report);
         boolean success = false;
         
         rootAST = parser.parseProgram();
-        if (report.numErrors == 0) {
+        
+        HtmlFile file = new HtmlFile(); // creates Html file
+        file.HtmlWrite(scanner.getHtmlText()); //writes in html file
+        
+        
+        /*if (report.numErrors == 0) {
             System.out.println("Contextual Analysis ...");
             Checker checker = new Checker(report);
             checker.check(rootAST);
@@ -65,13 +72,20 @@ public class IDECompiler {
                     encoder.saveObjectProgram(sourceName.replace(".tri", ".tam"));
                     success = true;
                 }
-            }
+            }*/
+ 
+        if (report.numErrors == 0) {
+         success = true;
+        
         }
 
-        if (success)
+        if (success){
             System.out.println("Compilation was successful.");
+            
+        }
         else
             System.out.println("Compilation was unsuccessful.");
+        
         
         return(success);
     }
@@ -97,4 +111,5 @@ public class IDECompiler {
     private Program rootAST;        // The Root Abstract Syntax Tree.    
     private IDEReporter report;     // Our ErrorReporter class.
     // </editor-fold>
+    
 }
