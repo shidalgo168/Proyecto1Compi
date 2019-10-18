@@ -67,52 +67,52 @@ final class Token extends Object {
     OPERATOR	= 3,
 
     // reserved words - must be in alphabetical order...
-        AND             = 4, //ssm_changes added lines = tabbed lines
+        AND               = 4, //ssm_changes added lines = tabbed lines
     ARRAY		= 5,
     CONST		= 6,
     DO			= 7,
-    ELSE		= 8,
+    ELSE		         = 8,
     END			= 9,
-        FOR             = 10,
-    FUNC		= 11,
+        FOR               = 10,//ssm_changes
+    FUNC		         = 11,
     IF			= 12,
     IN			= 13,
-        INIT            = 14,
+        INIT              = 14,//ssm_changes
     LET			= 15,
-        LOCAL           = 16,
-        LOOP            = 17,
+        LOCAL             = 16,//ssm_changes
+        LOOP              = 17,//ssm_changes
     OF			= 18,
-    PROC		= 19,
+    PROC		         = 19,
     RECORD		= 20,
-        RECURSIVE       = 21,
-        REPEAT          = 22,
-        SKIP		= 23, 
-    THEN		= 24,
-        TO              = 25,
-    TYPE		= 26,
-        UNTIL           = 27,
-    VAR			= 28,
+        RECURSIVE         = 21,//ssm_changes
+        REPEAT            = 22,//ssm_changes
+        SKIP		= 23, //ssm_changes
+    THEN		         = 24,
+        TO                = 25,//ssm_changes
+    TYPE		         = 26,
+        UNTIL             = 27,//ssm_changes
+    VAR		  	 = 28,
     WHILE		= 29,
 
     // punctuation...
     DOT			= 30,
     COLON		= 31,
-    SEMICOLON           = 32,
+    SEMICOLON             = 32,
     COMMA		= 33,
     BECOMES		= 34,
     IS			= 35,
-
+ 
     // brackets...
     LPAREN		= 36,
     RPAREN		= 37,
-    LBRACKET            = 38,
-    RBRACKET            = 39,
+    LBRACKET              = 38,
+    RBRACKET              = 39,
     LCURLY		= 40,
     RCURLY		= 41,
 
     // special tokens...
     ERROR		= 42,
-          EOT           = 43;
+          EOT             = 43;
   
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -125,24 +125,24 @@ final class Token extends Object {
     "do",
     "else",
     "end",
-        "for",
+        "for", //ssm_changes
     "func",
     "if",
     "in",
-        "init",
+        "init", //ssm_changes
     "let",
-        "local",
-        "loop",
+        "local", //ssm_changes
+        "loop", //ssm_changes
     "of",
     "proc",
     "record",
-        "recursive",
-        "repeat",
-        "skip", 
-    "then",
-        "to",
+        "recursive", //ssm_changes
+        "repeat",    //ssm_changes
+        "skip",      //ssm_changes
+    "then", 
+        "to",        //ssm_changes
     "type",
-        "until",
+        "until",     //ssm_changes
     "var",
     "while",
     ".",

@@ -308,7 +308,7 @@ public class Parser {
       break;
     */
       
- // ssm_changes add SKIP  
+            // ssm_changes add SKIP  
             case Token.SKIP:
                 acceptIt();
                 finish(commandPos);
@@ -430,7 +430,7 @@ public class Parser {
     case Token.IN:
     /* case Token.EOT: // ssm_changes
 
-      finish(commandPos);
+      /*finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
       break;*/
 
@@ -479,6 +479,7 @@ public class Parser {
         Expression e2AST = parseExpression();
         accept(Token.ELSE);
         Expression e3AST = parseExpression();
+        accept(Token.END);
         finish(expressionPos);
         expressionAST = new IfExpression(e1AST, e2AST, e3AST, expressionPos);
       }

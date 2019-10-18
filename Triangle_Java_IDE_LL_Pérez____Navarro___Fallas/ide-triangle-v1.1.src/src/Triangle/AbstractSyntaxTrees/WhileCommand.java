@@ -25,7 +25,8 @@ public class WhileCommand extends Command {
   }
 
   public Object visit(Visitor v, Object o) {
-    return v.visitWhileCommand(this, o);
+    //ssm_changes //return v.visitWhileCommand(this, o);
+    return null;
   }
 
   public Expression E;
