@@ -32,6 +32,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -310,6 +311,17 @@ public class XMLWriterVisitor implements Visitor{
         ast.E.visit(this, null);
         qTabs--;
         writeLineXML("</FuncDeclaration>");
+        return null;
+    }
+    
+    @Override
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj){
+        writeLineXML("<InitDeclaration>");
+        qTabs++;
+        ast.I.visit(this, null);
+        ast.E.visit(this, null);
+        qTabs--;
+        writeLineXML("</InitDeclaration>");
         return null;
     }
 
@@ -793,7 +805,7 @@ public class XMLWriterVisitor implements Visitor{
     private void writeLineXML(String line) {
         try {          
             if(qTabs>=0)
-                fileWriter.write("\t".repeat(qTabs));
+                for(int i = 0; i<qTabs; i++){ fileWriter.write("\t"); }
             fileWriter.write(line);
             fileWriter.write('\n');
         } catch (IOException e) {
