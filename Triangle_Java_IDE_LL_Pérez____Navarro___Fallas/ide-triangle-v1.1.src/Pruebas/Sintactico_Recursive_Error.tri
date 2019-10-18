@@ -1,0 +1,11 @@
+!"recursive" Proc-Funcs "end"
+
+let
+  recursive
+      func F () : Integer ~ 10;     ! Declaraciones separadas por un ";" y no un "and"
+      proc P (x : Integer) ~
+        putint (x * 2) end
+  end
+in
+  P (F())
+end

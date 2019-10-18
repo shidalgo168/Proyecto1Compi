@@ -1,9 +1,8 @@
 !"proc" Identifier "(" Formal-Parameter-Sequence ")" "~" cmd "end"
 
-
 let
   proc P (x : Integer) ~
-    putint (x * 2) end
+    putint (x * 2) ! falta "end"
 in
   P(6)
 end

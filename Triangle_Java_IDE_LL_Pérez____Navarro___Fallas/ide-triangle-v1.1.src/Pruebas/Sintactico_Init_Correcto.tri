@@ -1,0 +1,15 @@
+! "var" Identifier "init" Expression
+
+! prueba sobre un let
+
+
+
+let
+
+  var x init x+2
+
+in
+
+  putint(x)
+
+end

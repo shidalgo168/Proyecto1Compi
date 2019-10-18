@@ -1,5 +1,4 @@
-! "let" Declaration "in" Command "end"
-! "recursive" Proc-Funcs "end"
+!"recursive" Proc-Funcs "end"
 
 !REGLAS DEL RECURSIVE
 ! Proc-Funcs := Proc-Func ("and" Proc-Func)+
