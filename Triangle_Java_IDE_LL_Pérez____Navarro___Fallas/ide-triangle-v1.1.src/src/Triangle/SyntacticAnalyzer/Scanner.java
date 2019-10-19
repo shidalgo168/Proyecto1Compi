@@ -49,6 +49,7 @@ public final class Scanner {
 ///////////////////////////////////////////////////////////////////////////////
 
    public String getHtmlText(){
+       htmlText = htmlText.replace("null", "");
        return htmlText;
    }
    
@@ -91,6 +92,7 @@ public final class Scanner {
             comment += "<br>";
             takeIt();
         }
+      
         insertHtmlText(comment,44);
         comment = "";
       }
@@ -265,8 +267,9 @@ public final class Scanner {
               
           //inser literals
           case Token.CHARLITERAL:
-          case Token.INTLITERAL:  
-              htmlText+=("<span class='literal'>"+htmlT+"</span>");
+          case Token.INTLITERAL:
+                  htmlText+=("<span class='literal'>"+htmlT+"</span>");
+              
               break;
               
           //insert comments   
@@ -296,6 +299,7 @@ public final class Scanner {
               htmlText+=htmlT;
               break;
       }
+       
    }
     
 
