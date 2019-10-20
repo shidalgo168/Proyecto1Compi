@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package HTML.Generator;
-
-import java.io.File;
+import Triangle.AbstractSyntaxTrees.Program;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,8 +19,8 @@ public class HtmlFile {
     private FileWriter writer; 
    
 
-    public HtmlFile() {
-        this.name = "IDE-Triangle.html";
+    public HtmlFile(Program ast, String name) {
+        this.name = name;
         try {
             this.writer = new FileWriter(name);
             writer.write("IDE-Triangle");

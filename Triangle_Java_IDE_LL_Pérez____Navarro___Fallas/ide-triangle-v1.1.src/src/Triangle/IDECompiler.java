@@ -55,8 +55,8 @@ public class IDECompiler {
         
         rootAST = parser.parseProgram();
         
-        HtmlFile file = new HtmlFile(); // creates Html file
-        file.HtmlWrite(scanner.getHtmlText()); //writes in html file
+    
+        htmlText = scanner.getHtmlText(); //writes in html file
         
         
         /*if (report.numErrors == 0) {
@@ -89,6 +89,10 @@ public class IDECompiler {
         
         return(success);
     }
+    
+    public String getHtmlText(){
+        return htmlText;
+    }
       
     /**
      * Returns the line number where the first error is.
@@ -111,5 +115,6 @@ public class IDECompiler {
     private Program rootAST;        // The Root Abstract Syntax Tree.    
     private IDEReporter report;     // Our ErrorReporter class.
     // </editor-fold>
+    private String htmlText;
     
 }

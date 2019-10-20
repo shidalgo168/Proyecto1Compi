@@ -37,6 +37,7 @@ import Core.ExampleFileFilter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import Core.Visitors.TreeVisitor;
+import HTML.Generator.HtmlFile;
 import Triangle.TreeWriterXML.XMLWriter;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -624,6 +625,9 @@ public class Main extends javax.swing.JFrame {
                 XMLWriter.write(compiler.getAST(),desktopPane.getSelectedFrame().getTitle().replace(".tri", ".xml"));        
                 ((FileFrame)desktopPane.getSelectedFrame()).setTable(tableVisitor.getTable(compiler.getAST()));
                 
+                //ssm_changes
+                HtmlFile Html = new HtmlFile(compiler.getAST(),desktopPane.getSelectedFrame().getTitle().replace(".tri", ".html"));
+                Html.HtmlWrite(compiler.getHtmlText());
                 runMenuItem.setEnabled(true);
                 buttonRun.setEnabled(true);
             } else {
