@@ -244,24 +244,32 @@ public final class Scanner {
        switch(tokenType) {
            
           //insert reserved words 
+          case Token.AND:
           case Token.ARRAY:  
           case Token.CONST:  
           case Token.DO:
           case Token.ELSE:  
           case Token.END:   
           case Token.FUNC:
+          case Token.FOR:
           case Token.IF:  
           case Token.IN:  
           case Token.INIT:  
           case Token.LET:
+          case Token.LOCAL:
           case Token.OF:  
           case Token.PROC:
-          case Token.RECORD:    
-          case Token.THEN:    
-          case Token.TYPE:  
+          case Token.RECORD:
+          case Token.REPEAT:
+          case Token.RECURSIVE:
+          case Token.SKIP:
+          case Token.THEN:
+          case Token.TO:
+          case Token.TYPE: 
+          case Token.UNTIL:
           case Token.VAR:  
           case Token.WHILE: 
-              //faltan and, for, local, to, recursive, repeat, skip, to, until 
+             
               htmlText+=("<span class='reserved'>"+htmlT+"</span>");
               break;
               
