@@ -1,7 +1,5 @@
 ! "if" expr "then" cmd "else" cmd "end"
 
-if b<0 then
-  putint(1)
-else 
-  putint(2)
-end
+loop while 1>5 do
+  2>5
+repeat

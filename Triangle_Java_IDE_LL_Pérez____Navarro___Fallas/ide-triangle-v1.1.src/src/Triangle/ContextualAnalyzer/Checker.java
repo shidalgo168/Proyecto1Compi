@@ -964,21 +964,41 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.booleanType)) {
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        }
+        ast.C.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.booleanType)) {
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        }
+        ast.C.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.booleanType)) {
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        }
+        ast.C.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.booleanType)) {
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        }
+        ast.C.visit(this, null);
         return null;
     }
 
