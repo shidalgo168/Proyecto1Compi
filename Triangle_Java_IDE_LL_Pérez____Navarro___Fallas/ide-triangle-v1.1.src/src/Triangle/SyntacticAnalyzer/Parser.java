@@ -771,16 +771,15 @@ public class Parser {
             finish(declarationPos);
             declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
         }
-        else if(currentToken.kind == Token.INIT){
+        else if(currentToken.kind == Token.INIT){ //ssm_changes added init rule
             acceptIt();
             Expression eAST = parseExpression();
             finish(declarationPos);
             declarationAST = new InitDeclaration(iAST, eAST, declarationPos);
         }
         else{
-            syntacticError("\"%\" cannot start formal parameter", currentToken.spelling);
+            syntacticError("\"%\" cannot finish var declaration", currentToken.spelling);
         }
-        
       }
       break;
 
