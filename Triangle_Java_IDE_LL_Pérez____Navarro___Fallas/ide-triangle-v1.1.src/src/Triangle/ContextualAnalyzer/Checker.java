@@ -52,12 +52,12 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
-import Triangle.AbstractSyntaxTrees.LocalDeclaration;
-import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
-import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
-import Triangle.AbstractSyntaxTrees.LoopForCommand;
-import Triangle.AbstractSyntaxTrees.LoopUntilCommand;
-import Triangle.AbstractSyntaxTrees.LoopWhileCommand;
+import Triangle.AbstractSyntaxTrees.LocalDeclaration; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopForCommand; //ssm_changes add 
+import Triangle.AbstractSyntaxTrees.LoopUntilCommand; //ssm_changes add
+import Triangle.AbstractSyntaxTrees.LoopWhileCommand; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -70,7 +70,7 @@ import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
-import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration; //ssm_changes add
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -328,10 +328,6 @@ public final class Checker implements Visitor {
         return null;
     }
     
-    //ssm_changes add method TODO
-    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
-        return null;
-    }
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
         idTable.enter(ast.I.spelling, ast); // permits recursion
@@ -951,12 +947,29 @@ public final class Checker implements Visitor {
         StdEnvironment.unequalDecl = declareStdBinaryOp("\\=", StdEnvironment.anyType, StdEnvironment.anyType, StdEnvironment.booleanType);
 
     }
-
-    @Override
-    public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
+    
+    //ssm_changes add methods
+    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
+        ast.I.type = (TypeDenoter) ast.E.visit(this, null);
+        idTable.enter(ast.I.spelling, ast);
+        if (ast.duplicated){
+            reporter.reportError("identifier \"%\" already declared",
+                    ast.I.spelling, ast.position);
+        }
         return null;
     }
-
+    
+    @Override
+    public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
+        idTable.openScope();
+        ast.D1.visit(this, null);
+        idTable.diminishScope();
+        ast.D2.visit(this, null);
+        idTable.closeScopeDeepLevel();
+        
+        return null;
+    }
+    
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
         return null;

@@ -104,5 +104,28 @@ public final class IdentificationTable {
 
     return attr;
   }
-
+  
+  //ssm_changes add method
+  public void diminishScope () {
+    level --;
+  }
+  
+  //ssm_changes add method
+  public void closeScopeDeepLevel () {
+    IdEntry entry, local, local2;
+    local = null;
+    
+    entry = this.latest;
+    while(entry.level == this.level){
+        local = entry;
+        entry = local.previous;
+    }
+    
+    while(entry.level == this.level + 1){
+        local2 = entry;
+        entry = local2.previous;
+    }
+    local.previous = entry;
+  }
+  
 }

@@ -150,31 +150,42 @@ public class TableVisitor implements Visitor {
         return (null);
     }
     
-    //ssm_changes
+    //ssm_changes TODO
         @Override
     public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
         return null;
     }
     
-    //ssm_changes
+    //ssm_changes TODO
     @Override
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
         return null;
     }
 
-    //ssm_changes
+    //ssm_changes TODO
     @Override
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
         return null;
     }
-    //ssm_changes
+    //ssm_changes TODO
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
+        ast.D.visit(this, null);
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
         return null;
     }
-    //ssm_changes
+    //ssm_changes TODO
     @Override
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
         return null;
     }
     
@@ -303,13 +314,13 @@ public class TableVisitor implements Visitor {
   
   //ssm_changes add method
   public Object visitInitDeclaration(InitDeclaration ast, Object o) {
-      //beyond the scope of project
+      //beyond the scope of project TODO
       return(null);
   }
   
   //ssm_changes add method
   public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
-      //beyond the scope of project
+      //beyond the scope of project TODO
       return(null);
   }
   
@@ -330,7 +341,7 @@ public class TableVisitor implements Visitor {
   
   //ssm_changes add method
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-      //beyond the scope of project
+      //beyond the scope of project TODO
       return(null);
   }
   
