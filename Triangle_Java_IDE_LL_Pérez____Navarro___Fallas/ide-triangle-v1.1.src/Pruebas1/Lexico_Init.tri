@@ -3,7 +3,7 @@
 
 let
   var x init
-          let const y~4 in 5+y end
+          let const y~4 in x+y end
 in
   putint(x)
 end
