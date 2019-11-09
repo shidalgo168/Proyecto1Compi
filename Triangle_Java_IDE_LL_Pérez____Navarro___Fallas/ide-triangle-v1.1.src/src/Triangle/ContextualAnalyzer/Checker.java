@@ -730,7 +730,12 @@ public final class Checker implements Visitor {
         } else if (binding instanceof VarDeclaration) {
             ast.type = ((VarDeclaration) binding).T;
             ast.variable = true;
-        } else if (binding instanceof ConstFormalParameter) {
+        } //ssm_changes add condition for init lecture
+          else if (binding instanceof InitDeclaration) {
+            ast.type = ((InitDeclaration) binding).I.type;
+            ast.variable = true;
+        } //----
+        else if (binding instanceof ConstFormalParameter) {
             ast.type = ((ConstFormalParameter) binding).T;
             ast.variable = false;
         } else if (binding instanceof VarFormalParameter) {

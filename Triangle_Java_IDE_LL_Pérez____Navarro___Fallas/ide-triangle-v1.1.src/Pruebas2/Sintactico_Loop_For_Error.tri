@@ -1,0 +1,5 @@
+! "loop" "for" Identifier "~" Expression "to" Expression "do" Command "repeat"
+
+loop for i ~ 0 through 10 do ! "through" en vez de "to"
+    putint (10)
+repeat
