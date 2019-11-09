@@ -1,5 +1,4 @@
-"loop" "while" Expression "do" Command "repeat"
-
+x:=0
 loop while 2>1 do
-  x := x+1
+  x := 0
 repeat
