@@ -153,29 +153,45 @@ public class TableVisitor implements Visitor {
     //ssm_changes
         @Override
     public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
-        return null;
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
     }
     
     //ssm_changes
     @Override
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
-        return null;
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
     }
 
     //ssm_changes
     @Override
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
-        return null;
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
     }
     //ssm_changes
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
-        return null;
+        ast.E.visit(this, null);
+        ast.D.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
     }
     //ssm_changes
     @Override
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
-        return null;
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+
+        return (null);
     }
     
   // </editor-fold>

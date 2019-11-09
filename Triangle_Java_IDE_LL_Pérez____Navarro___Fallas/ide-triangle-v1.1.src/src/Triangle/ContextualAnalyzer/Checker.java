@@ -307,7 +307,7 @@ public final class Checker implements Visitor {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
         }
-        return null;
+        return eType;
     }
 
     public Object visitFuncDeclaration(FuncDeclaration ast, Object o) {
@@ -836,7 +836,6 @@ public final class Checker implements Visitor {
 
         IntegerExpression constExpr;
         ConstDeclaration binding;
-
         // constExpr used only as a placeholder for constType
         constExpr = new IntegerExpression(null, dummyPos);
         constExpr.type = constType;
@@ -1004,6 +1003,17 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
+        idTable.openScope();
+        TypeDenoter dType = (TypeDenoter) ast.D.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.integerType)) {
+            reporter.reportError("Integer expression expected here", "", ast.E.position);
+        }
+        if (!dType.equals(StdEnvironment.integerType)) {
+            reporter.reportError("Integer declaration expected here", "", ast.D.position);
+        }
+        ast.C.visit(this, null);
+        idTable.closeScope();
         return null;
     }
 }
