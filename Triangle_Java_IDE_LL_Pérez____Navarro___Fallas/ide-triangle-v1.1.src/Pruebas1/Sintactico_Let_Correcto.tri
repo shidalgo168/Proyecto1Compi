@@ -1,6 +1,6 @@
 !"let" Declaration "in" Command "end"
 let
-  const a ~ 1
+  var a := 1
 in
   putint(a)
 end

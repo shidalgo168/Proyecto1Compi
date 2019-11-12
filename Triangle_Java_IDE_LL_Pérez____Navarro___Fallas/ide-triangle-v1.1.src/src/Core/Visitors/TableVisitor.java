@@ -155,7 +155,8 @@ public class TableVisitor implements Visitor {
     public Object visitLoopWhileCommand(LoopWhileCommand ast, Object o) {
         ast.E.visit(this, null);
         ast.C.visit(this, null);
-        return null;
+
+        return (null);
     }
     
     //ssm_changes TODO
@@ -163,7 +164,8 @@ public class TableVisitor implements Visitor {
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
         ast.E.visit(this, null);
         ast.C.visit(this, null);
-        return null;
+
+        return (null);
     }
 
     //ssm_changes TODO
@@ -171,6 +173,7 @@ public class TableVisitor implements Visitor {
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
         ast.C.visit(this, null);
         ast.E.visit(this, null);
+        
         return null;
     }
     //ssm_changes TODO
@@ -179,6 +182,7 @@ public class TableVisitor implements Visitor {
         ast.D.visit(this, null);
         ast.E.visit(this, null);
         ast.C.visit(this, null);
+        
         return null;
     }
     //ssm_changes TODO
@@ -186,6 +190,7 @@ public class TableVisitor implements Visitor {
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
         ast.C.visit(this, null);
         ast.E.visit(this, null);
+        
         return null;
     }
     
