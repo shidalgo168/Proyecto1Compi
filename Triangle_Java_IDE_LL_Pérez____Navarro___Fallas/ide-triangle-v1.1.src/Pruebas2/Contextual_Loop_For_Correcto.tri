@@ -9,6 +9,3 @@ in
     repeat
     !x := i
 end
-
-
-

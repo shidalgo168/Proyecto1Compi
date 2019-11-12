@@ -1,6 +1,0 @@
-! "loop" "while" Expression "do" Command "repeat"
-
-loop while 2>1 do
-  x := x+1
-repeat
-

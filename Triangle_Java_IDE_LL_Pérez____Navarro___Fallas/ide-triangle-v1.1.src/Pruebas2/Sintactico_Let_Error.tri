@@ -1,7 +1,0 @@
-!  "let" Declaration "in" Command "end" 
-
-let
-  const n ~ 1
-in
-  putint(n)
-!Falta la palabra reservada "end"

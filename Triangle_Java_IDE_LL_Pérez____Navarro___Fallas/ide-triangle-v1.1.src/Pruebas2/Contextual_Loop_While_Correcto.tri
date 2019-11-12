@@ -1,0 +1,8 @@
+! "loop" "while" Expression "do" Command "repeat"
+let
+  var x init 5
+in
+  loop while 2>1 do
+    x := x+1
+  repeat
+end

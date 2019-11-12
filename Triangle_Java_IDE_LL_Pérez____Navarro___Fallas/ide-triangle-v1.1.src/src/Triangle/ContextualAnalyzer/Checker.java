@@ -94,8 +94,12 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
+import java.util.ArrayList; //ssm_changes
 
 public final class Checker implements Visitor {
+    ArrayList<Object> astList = new ArrayList<>(); //ssm_changes - will contain all the ASTs left behind from the recursive ID identification
+    boolean visitingRecursive = false; //ssm_changes - flag for the recursive visit
+    int nestedLevel = 0; //ssm_changes - value to know the current recursive AST level (depth)
 
     // Commands
     // Always returns null. Does not use the given object.
@@ -311,6 +315,7 @@ public final class Checker implements Visitor {
         return null;
     }
     
+    //ssm_changes implement method
     public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (!eType.equals(StdEnvironment.integerType)) {
@@ -330,15 +335,20 @@ public final class Checker implements Visitor {
         if (ast.duplicated) {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
+        }                       //ssm_changes added if
+        if(visitingRecursive){
+            astList.add(ast);
+        } else {                //end ----------------
+            idTable.openScope();
+            ast.FPS.visit(this, null);
+            TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+            idTable.closeScope();
+            if (!ast.T.equals(eType)) {
+                reporter.reportError("body of function \"%\" has wrong type",
+                        ast.I.spelling, ast.E.position);
+            }
         }
-        idTable.openScope();
-        ast.FPS.visit(this, null);
-        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
-        idTable.closeScope();
-        if (!ast.T.equals(eType)) {
-            reporter.reportError("body of function \"%\" has wrong type",
-                    ast.I.spelling, ast.E.position);
-        }
+        
         return null;
     }
     
@@ -348,11 +358,16 @@ public final class Checker implements Visitor {
         if (ast.duplicated) {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
+        }                       //ssm_changes added if
+        if(visitingRecursive){
+            astList.add(ast);
+        } else {                //end ----------------
+            idTable.openScope();
+            ast.FPS.visit(this, null);
+            ast.C.visit(this, null);
+            idTable.closeScope();
         }
-        idTable.openScope();
-        ast.FPS.visit(this, null);
-        ast.C.visit(this, null);
-        idTable.closeScope();
+        
         return null;
     }
 
@@ -969,7 +984,7 @@ public final class Checker implements Visitor {
 
     }
     
-    //ssm_changes add methods
+    //ssm_changes add methods -----------------------------------------------
     public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
         ast.I.type = (TypeDenoter) ast.E.visit(this, null);
         idTable.enter(ast.I.spelling, ast);
@@ -993,9 +1008,38 @@ public final class Checker implements Visitor {
     
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        visitingRecursive = true;
+        nestedLevel++; // indicates how deep is the current recursive ast
         ast.PF1.visit(this,null);
         ast.PF2.visit(this,null);
+        nestedLevel--;
+        if(nestedLevel==0){ //when is in the root node
+            visitingRecursive = false;
+            visitRemainingASTs();
+        }
         return null;
+        
+    }
+     //auxiliar method, visits each pending ast and finish the visits
+    public void visitRemainingASTs(){
+        for(Object ast : astList){
+            if(ast instanceof ProcDeclaration){
+                idTable.openScope();
+                ((ProcDeclaration) ast).FPS.visit(this, null);
+                ((ProcDeclaration) ast).C.visit(this, null);
+                idTable.closeScope();
+            } else {
+                idTable.openScope();
+                ((FuncDeclaration) ast).FPS.visit(this, null);
+                TypeDenoter eType = (TypeDenoter) ((FuncDeclaration) ast).E.visit(this, null);
+                idTable.closeScope();
+                if (!((FuncDeclaration) ast).T.equals(eType)) {
+                    reporter.reportError("body of function \"%\" has wrong type",
+                            ((FuncDeclaration) ast).I.spelling, ((FuncDeclaration) ast).E.position);
+                }
+            }
+        }
+        astList.clear();
     }
 
     @Override
@@ -1050,4 +1094,5 @@ public final class Checker implements Visitor {
         idTable.closeScope();
         return null;
     }
+    //ssm_changes END add methods -------------------------------------------
 }
