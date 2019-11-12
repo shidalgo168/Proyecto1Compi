@@ -2,10 +2,12 @@
 
 let
   recursive
-      func F () : Integer ~ 10;     ! Declaraciones separadas por un ";" y no un "and"
+      func F () : Integer ~ 10
+  and
       proc P (x : Integer) ~
         putint (x * 2) end
-  end
+  end;
+  func T() : Integer ~ F()    ! la func T esta fuera del recursive, por lo que esta afuera del scope
 in
   P (F())
 end
