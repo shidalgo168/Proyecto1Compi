@@ -29,6 +29,7 @@ import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
+import Triangle.AbstractSyntaxTrees.ConstDeclarationFor;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
@@ -375,7 +376,7 @@ public class Parser {
                         accept(Token.DO);
                         Command cAST = parseCommand();
                         accept(Token.REPEAT);
-                        Declaration dAST = new ConstDeclaration(iAST, e1AST, commandPos);
+                        Declaration dAST = new ConstDeclarationFor(iAST, e1AST, commandPos);
                         finish(commandPos);
                         commandAST = new LoopForCommand(dAST, e2AST, cAST, commandPos);
                     }

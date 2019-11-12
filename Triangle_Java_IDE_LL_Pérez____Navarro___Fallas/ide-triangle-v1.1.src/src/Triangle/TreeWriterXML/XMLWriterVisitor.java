@@ -19,7 +19,9 @@ import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
+import Triangle.AbstractSyntaxTrees.ConstDeclarationFor;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
@@ -813,7 +815,10 @@ public class XMLWriterVisitor implements Visitor{
             e.printStackTrace();
         }
     }
-    
+    //ssm_changes
+    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
+      return(visitConstDeclaration(new ConstDeclaration(ast.I, ast.E, ast.getPosition()),o));
+    }
     /*
      * Convert the characters "<" & "<=" to their equivalents in html
      */ 
