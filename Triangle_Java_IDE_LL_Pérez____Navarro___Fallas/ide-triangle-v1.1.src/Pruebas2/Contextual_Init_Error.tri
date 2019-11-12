@@ -1,0 +1,12 @@
+!Prueba error contextual
+! "var" Identifier "init" Expression
+
+let
+
+  var x init x+2
+
+in
+
+  putint(x)
+
+end
