@@ -19,7 +19,9 @@ import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
+import Triangle.AbstractSyntaxTrees.ConstDeclarationFor;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
@@ -206,6 +208,11 @@ public class TreeVisitor implements Visitor {
     public Object visitConstDeclaration(ConstDeclaration ast, Object obj) {
         return (createBinary("Constant Declaration", ast.I, ast.E));
     }
+    
+        //ssm_changes
+    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
+        return (createBinary("Constant Declaration For", ast.I, ast.E));
+   }
 
     public Object visitFuncDeclaration(FuncDeclaration ast, Object obj) {
         return (createQuaternary("Function Declaration", ast.I, ast.FPS, ast.T, ast.E));
