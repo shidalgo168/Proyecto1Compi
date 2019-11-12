@@ -1,0 +1,8 @@
+! Prueba error contextual
+! "if" expr "then" cmd "else" cmd "end"
+
+if 45 then
+  putint(1)
+else 
+  putint(2)
+end

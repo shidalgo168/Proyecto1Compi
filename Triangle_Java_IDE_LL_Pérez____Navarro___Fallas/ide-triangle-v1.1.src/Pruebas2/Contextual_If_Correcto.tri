@@ -1,3 +1,4 @@
+! Prueba exitosa contextual
 ! "if" expr "then" cmd "else" cmd "end"
 
 if 4<0 then

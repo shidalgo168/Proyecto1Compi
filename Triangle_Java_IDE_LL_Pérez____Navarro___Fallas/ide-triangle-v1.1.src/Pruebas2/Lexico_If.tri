@@ -1,5 +1,0 @@
-! "if" expr "then" cmd "else" cmd "end"
-
-loop while 1>5 do
-  2>5
-repeat

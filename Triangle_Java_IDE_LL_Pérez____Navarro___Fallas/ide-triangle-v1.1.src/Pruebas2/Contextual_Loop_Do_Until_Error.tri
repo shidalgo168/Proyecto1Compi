@@ -1,7 +1,5 @@
 !"loop" "do" Command "until" Expression "repeat"
-loop
+loop do
     putint(1)
-  until true
+  until 2
 repeat
-
-! Falta "do"
