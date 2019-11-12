@@ -4,6 +4,6 @@ loop do
 
     putint(1)
 
-  while true
+  while 3
 
 repeat

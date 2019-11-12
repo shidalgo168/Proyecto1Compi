@@ -1,0 +1,9 @@
+! Prueba exitosa contextual
+!"var" Identifier "init" Expression
+
+let
+  var x init
+          let const y~4 in 5+y end
+in
+  putint(x)
+end

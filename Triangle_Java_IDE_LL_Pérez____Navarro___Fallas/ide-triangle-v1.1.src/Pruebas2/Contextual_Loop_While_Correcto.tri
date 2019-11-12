@@ -1,6 +1,8 @@
+!Prueba exitosa Contextual
 ! "loop" "while" Expression "do" Command "repeat"
 
 loop while 2>1 do
-  x := x+1
+  putint(1)
 repeat
+
 
