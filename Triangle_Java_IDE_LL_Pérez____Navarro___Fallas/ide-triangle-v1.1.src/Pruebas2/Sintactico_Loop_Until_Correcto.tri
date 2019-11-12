@@ -1,6 +1,0 @@
-! "loop" "until" Expression "do" Command "repeat"
-
-loop until true do 
-    putint (1);
-    putint (2)
-repeat
