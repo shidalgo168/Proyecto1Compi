@@ -18,7 +18,9 @@ import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
+import Triangle.AbstractSyntaxTrees.ConstDeclarationFor;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
@@ -300,6 +302,11 @@ public class TableVisitor implements Visitor {
 
       return(null);
   }
+    //ssm_changes
+    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
+      return(visitConstDeclaration(new ConstDeclaration(ast.I, ast.E, ast.getPosition()),o));
+    }
+  
   
   public Object visitFuncDeclaration(FuncDeclaration ast, Object o) {    
       try {

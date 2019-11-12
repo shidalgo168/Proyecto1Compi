@@ -29,6 +29,7 @@ import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
+import Triangle.AbstractSyntaxTrees.ConstDeclarationFor;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
@@ -307,8 +308,21 @@ public final class Checker implements Visitor {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
         }
-        return eType;
+        return null;
     }
+    
+    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (!eType.equals(StdEnvironment.integerType)) {
+            reporter.reportError("Integer expression expected here", "", ast.E.position);
+        }        
+        idTable.enter(ast.I.spelling, ast);
+        if (ast.duplicated) {
+            reporter.reportError("identifier \"%\" already declared",
+                    ast.I.spelling, ast.position);
+        }
+        return null;
+    }    
 
     public Object visitFuncDeclaration(FuncDeclaration ast, Object o) {
         ast.T = (TypeDenoter) ast.T.visit(this, null);
@@ -731,6 +745,9 @@ public final class Checker implements Visitor {
         } else if (binding instanceof ConstDeclaration) {
             ast.type = ((ConstDeclaration) binding).E.type;
             ast.variable = false;
+        } else if (binding instanceof ConstDeclarationFor) { //ssm_changes
+            ast.type = ((ConstDeclarationFor) binding).E.type;
+            ast.variable = false;
         } else if (binding instanceof VarDeclaration) {
             ast.type = ((VarDeclaration) binding).T;
             ast.variable = true;
@@ -1004,13 +1021,10 @@ public final class Checker implements Visitor {
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
         idTable.openScope();
-        TypeDenoter dType = (TypeDenoter) ast.D.visit(this, null);
+        ast.D.visit(this, null);
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (!eType.equals(StdEnvironment.integerType)) {
             reporter.reportError("Integer expression expected here", "", ast.E.position);
-        }
-        if (!dType.equals(StdEnvironment.integerType)) {
-            reporter.reportError("Integer declaration expected here", "", ast.D.position);
         }
         ast.C.visit(this, null);
         idTable.closeScope();
