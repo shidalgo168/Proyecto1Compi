@@ -958,6 +958,8 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        ast.PF1.visit(this,null);
+        ast.PF2.visit(this,null);
         return null;
     }
 
