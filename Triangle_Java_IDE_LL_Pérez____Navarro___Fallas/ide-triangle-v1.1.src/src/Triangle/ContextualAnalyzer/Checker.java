@@ -315,6 +315,7 @@ public final class Checker implements Visitor {
         return null;
     }
     
+    //ssm_changes implement method
     public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (!eType.equals(StdEnvironment.integerType)) {
