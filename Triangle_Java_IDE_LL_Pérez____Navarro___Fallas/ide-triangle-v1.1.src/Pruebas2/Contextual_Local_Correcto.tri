@@ -6,10 +6,9 @@ let
   local          	
     var x : Integer				! Declaration
   in
-    proc P (y : Integer) ~ putint (x * y) end;	! Declaration
-    const y ~ x
+    proc P (y : Integer) ~ putint (x * y) end	! Declaration
   end
 
 in
-  skip
+  P(5)
 end 

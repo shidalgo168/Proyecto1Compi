@@ -1,7 +1,0 @@
-!Prueba error Contextual
-! "loop" "until" Expression "do" Command "repeat"
-
-loop until 2 do 
-    putint (1);
-    putint (2)
-repeat

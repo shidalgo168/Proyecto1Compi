@@ -1,5 +1,0 @@
-!"loop" "do" Command "until" Expression "repeat"
-loop do
-    putint(1)
-  until 2
-repeat

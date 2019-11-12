@@ -7,13 +7,14 @@
 
 let
   recursive
-      func F () : Integer ~ 10
-    and
-      proc P (x : Integer) ~
-        putint (x * 2) end
-    and
-      func F () : Integer ~ 10
-  end
+    func F() : Integer ~ 10
+  and
+    proc P (x : Integer) ~
+        putint(x + T()) end
+  and
+    func T () : Integer ~ F()
+  end;
+  var x : Integer
 in
-  P (F())
+  x := F()
 end

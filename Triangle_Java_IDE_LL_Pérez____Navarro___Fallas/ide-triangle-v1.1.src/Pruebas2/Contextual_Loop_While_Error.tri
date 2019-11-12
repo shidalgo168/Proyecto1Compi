@@ -1,7 +1,0 @@
-!Prueba error Contextual
-! "loop" "while" Expression "do" Command "repeat"
-
-loop while 2 do
-  putint(1)
-repeat
-
