@@ -2,12 +2,17 @@
 
 let
   recursive
-      func F () : Integer ~ 10
+    func F() : Integer ~ 10
   and
-      proc P (x : Integer) ~
-        putint (x * 2) end
-  end;
-  func T() : Integer ~ F()    ! la func T esta fuera del recursive, por lo que esta afuera del scope
+    proc P (x : Integer) ~
+        putint(x + T()) end
+  and
+    func T () : Integer ~ F()
+  end; ! fin del recursive
+
+  func A() : Integer ~ T();  !las declaraciones anteriores del recursive quedan visibles o "exportadas"
+  proc B(x : Integer) ~ putint(x + C()) end;  ! No puede ver a C porque no está definida anteriormente, y solo lo permite el recursive
+  func C() : Integer ~ A()
 in
   P (F())
 end
