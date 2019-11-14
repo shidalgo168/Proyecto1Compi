@@ -2,7 +2,6 @@
  * IDE-Triangle v1.0
  * Compiler.java 
  */
-
 package Triangle;
 
 import HTML.Generator.HtmlFile;
@@ -15,11 +14,9 @@ import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.ContextualAnalyzer.Checker;
 import Triangle.CodeGenerator.Encoder;
 
-
-
-/** 
- * This is merely a reimplementation of the Triangle.Compiler class. We need
- * to get to the ASTs in order to draw them in the IDE without modifying the
+/**
+ * This is merely a reimplementation of the Triangle.Compiler class. We need to
+ * get to the ASTs in order to draw them in the IDE without modifying the
  * original Triangle code.
  *
  * @author Luis Leopoldo P�rez <luiperpe@ns.isi.ulatina.ac.cr>
@@ -33,18 +30,19 @@ public class IDECompiler {
      */
     public IDECompiler() {
     }
-    
+
     /**
      * Particularly the same compileProgram method from the Triangle.Compiler
      * class.
+     *
      * @param sourceName Path to the source file.
      * @return True if compilation was succesful.
      */
     public boolean compileProgram(String sourceName) {
-        System.out.println("********** " +
-                           "Triangle Compiler (IDE-Triangle 1.0)" +
-                           " **********");
-        
+        System.out.println("********** "
+                + "Triangle Compiler (IDE-Triangle 1.0)"
+                + " **********");
+
         System.out.println("Syntactic Analysis ...");
         SourceFile source = new SourceFile(sourceName);
         Scanner scanner = new Scanner(source);
@@ -52,14 +50,12 @@ public class IDECompiler {
         report = new IDEReporter();
         Parser parser = new Parser(scanner, report);
         boolean success = false;
-        
+
         rootAST = parser.parseProgram();
-        
-    
+
         htmlText = scanner.getHtmlText(); //writes in html file
-        
-        //ssm_changes
-        /*if (report.numErrors == 0) {
+
+        if (report.numErrors == 0) {
             System.out.println("Contextual Analysis ...");
             Checker checker = new Checker(report);
             checker.check(rootAST);
@@ -67,58 +63,51 @@ public class IDECompiler {
                 System.out.println("Code Generation ...");
                 Encoder encoder = new Encoder(report);
                 encoder.encodeRun(rootAST, false);
-                
+
                 if (report.numErrors == 0) {
                     encoder.saveObjectProgram(sourceName.replace(".tri", ".tam"));
                     success = true;
                 }
-            }*/
- 
-        if (report.numErrors == 0) {
-            System.out.println("Contextual Analysis ...");
-            Checker checker = new Checker(report);
-            checker.check(rootAST);
-            if (report.numErrors == 0) {            
-                 success = true;
             }
         }
 
-        if (success){
+        if (success) {
             System.out.println("Compilation was successful.");
-            
-        }
-        else
+
+        } else {
             System.out.println("Compilation was unsuccessful.");
-        
-        
-        return(success);
+        }
+
+        return (success);
     }
-    
-    public String getHtmlText(){
+
+    public String getHtmlText() {
         return htmlText;
     }
-      
+
     /**
      * Returns the line number where the first error is.
+     *
      * @return Line number.
      */
     public int getErrorPosition() {
-        return(report.getFirstErrorPosition());
+        return (report.getFirstErrorPosition());
     }
-        
+
     /**
      * Returns the root Abstract Syntax Tree.
+     *
      * @return Program AST (root).
      */
     public Program getAST() {
-        return(rootAST);
+        return (rootAST);
     }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc=" Attributes ">
     private Program rootAST;        // The Root Abstract Syntax Tree.    
     private IDEReporter report;     // Our ErrorReporter class.
     // </editor-fold>
     private String htmlText;
-    
+
 }
