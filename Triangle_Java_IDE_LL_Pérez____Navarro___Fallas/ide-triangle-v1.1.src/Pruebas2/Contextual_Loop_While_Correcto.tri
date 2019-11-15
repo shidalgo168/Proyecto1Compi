@@ -1,8 +1,12 @@
 !Prueba exitosa Contextual
 ! "loop" "while" Expression "do" Command "repeat"
-
-loop while 2>1 do
-  putint(1)
+let
+   var x: Integer
+in
+ x:=2;
+loop while x<5 do
+  putint(x);
+  x := x+1
 repeat
-
+end
 

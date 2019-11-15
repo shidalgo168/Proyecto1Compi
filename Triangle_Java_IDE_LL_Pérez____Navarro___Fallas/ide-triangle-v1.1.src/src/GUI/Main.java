@@ -615,8 +615,8 @@ public class Main extends javax.swing.JFrame {
             
             output.setDelegate(delegateConsole);            
             if (compiler.compileProgram(desktopPane.getSelectedFrame().getTitle())) {           
-                //ssm_changes/ output.setDelegate(delegateTAMCode);
-                //ssm_changes/ disassembler.Disassemble(desktopPane.getSelectedFrame().getTitle().replace(".tri", ".tam"));
+                output.setDelegate(delegateTAMCode);
+                disassembler.Disassemble(desktopPane.getSelectedFrame().getTitle().replace(".tri", ".tam"));
                 ((FileFrame)desktopPane.getSelectedFrame()).setTree((DefaultMutableTreeNode)treeVisitor.visitProgram(compiler.getAST(), null));
                 
                 //ssm_changes
