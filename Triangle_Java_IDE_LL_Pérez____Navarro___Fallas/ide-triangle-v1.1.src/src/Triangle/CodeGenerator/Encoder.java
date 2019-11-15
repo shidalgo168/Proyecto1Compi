@@ -288,7 +288,24 @@ public final class Encoder implements Visitor {
     }
     //ssm_changes
     public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
-      return(visitConstDeclaration(new ConstDeclaration(ast.I, ast.E, ast.getPosition()),o));
+        Frame frame = (Frame) o;
+        int extraSize = 0;
+
+        if (ast.E instanceof CharacterExpression) {
+            CharacterLiteral CL = ((CharacterExpression) ast.E).CL;
+            ast.entity = new KnownValue(Machine.characterSize,
+                    characterValuation(CL.spelling));
+        } else if (ast.E instanceof IntegerExpression) {
+            IntegerLiteral IL = ((IntegerExpression) ast.E).IL;
+            ast.entity = new KnownValue(Machine.integerSize,
+                    Integer.parseInt(IL.spelling));
+        } else {
+            int valSize = ((Integer) ast.E.visit(this, frame)).intValue();
+            ast.entity = new UnknownValue(valSize, frame.level, frame.size);
+            extraSize = valSize;
+        }
+        writeTableDetails(ast);
+        return new Integer(extraSize);
     }
     public Object visitFuncDeclaration(FuncDeclaration ast, Object o) {
         Frame frame = (Frame) o;
