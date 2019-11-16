@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Program>
+	<LetCommand>
+			<VarDeclaration>
+				<Identifier value="x"/>
+				<IntTypeDenoter/>
+			</VarDeclaration>
+			<ProcDeclaration>
+				<Identifier value="P"/>
+				<SingleFormalParameterSequence>
+					<ConstFormalParameter>
+						<Identifier value="y"/>
+						<IntTypeDenoter/>
+					</ConstFormalParameter>
+				</SingleFormalParameterSequence>
+				<CallCommand>
+					<Identifier value="putint"/>
+					<SingleActualParameterSequence>
+						<ConstActualParameter>
+							<BinaryExpression>
+								<VnameExpression>
+									<SimpleVname>
+										<Identifier value="x"/>
+									</SimpleVname>
+								</VnameExpression>
+								<Operator value="*"/>
+								<VnameExpression>
+									<SimpleVname>
+										<Identifier value="y"/>
+									</SimpleVname>
+								</VnameExpression>
+							</BinaryExpression>
+						</ConstActualParameter>
+					</SingleActualParameterSequence>
+				</CallCommand>
+			</ProcDeclaration>
+		<CallCommand>
+			<Identifier value="P"/>
+			<SingleActualParameterSequence>
+				<ConstActualParameter>
+					<IntegerExpression>
+						<IntegerLiteral value="5"/>
+					</IntegerExpression>
+				</ConstActualParameter>
+			</SingleActualParameterSequence>
+		</CallCommand>
+	</LetCommand>
+</Program>
