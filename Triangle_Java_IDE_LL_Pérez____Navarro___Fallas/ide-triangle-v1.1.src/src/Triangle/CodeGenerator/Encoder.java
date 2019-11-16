@@ -1069,7 +1069,6 @@ public final class Encoder implements Visitor {
         ast.C.visit(this, frame);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr  );
-        
         return null;
     }
 

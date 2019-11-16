@@ -166,7 +166,6 @@ public class TableVisitor implements Visitor {
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
         ast.E.visit(this, null);
         ast.C.visit(this, null);
-
         return (null);
     }
 
@@ -176,7 +175,7 @@ public class TableVisitor implements Visitor {
         ast.C.visit(this, null);
         ast.E.visit(this, null);
         
-        return null;
+        return (null);
     }
     //ssm_changes TODO
     @Override
@@ -327,12 +326,14 @@ public class TableVisitor implements Visitor {
   //ssm_changes add method
   public Object visitInitDeclaration(InitDeclaration ast, Object o) {
       //beyond the scope of project TODO
+      ast.E.visit(this,null);
       return(null);
   }
   
   //ssm_changes add method
   public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
-      //beyond the scope of project TODO
+      ast.D1.visit(this, null);
+       ast.D1.visit(this, null);
       return(null);
   }
   
