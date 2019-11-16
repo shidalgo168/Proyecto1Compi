@@ -312,9 +312,7 @@ public final class Encoder implements Visitor {
     }
     
     //ssm_changes add method TODO
-    public Object visitInitDeclaration(InitDeclaration ast, Object obj) {
-        return 0;
-    }
+  
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
         Frame frame = (Frame) o;
@@ -1005,10 +1003,27 @@ public final class Encoder implements Visitor {
             }
         }
     }
+    
 
     @Override
+    public Object visitInitDeclaration(InitDeclaration ast, Object o) {
+        Frame frame = (Frame) o;
+        int extraSize = (Integer) ast.E.visit(this,frame);
+        ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+     
+        return extraSize;
+    }
+    
+    
+    @Override
     public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
-        return null;
+        Frame frame = (Frame) o;
+        int extraSize1 , extraSize2;
+        extraSize1 = ((Integer) ast.D1.visit(this,frame));
+        Frame frame2 = new Frame (frame,extraSize1);
+        extraSize2 = ((Integer) ast.D2.visit(this,frame2));
+        //writeTableDetails(ast);
+        return extraSize1 + extraSize2;
     }
 
     @Override
@@ -1048,11 +1063,24 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        int loopAddr;
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr  );
+        
         return null;
     }
 
     @Override
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        Frame frame = (Frame) o;
+        int loopAddr;
+        loopAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr  );
         return null;
     }
 
