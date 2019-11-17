@@ -1027,7 +1027,6 @@ public final class Encoder implements Visitor {
         Frame frame = (Frame) o;
         int extraSize = (Integer) ast.E.visit(this,frame);
         ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
-     
         return extraSize;
     }
     
@@ -1039,7 +1038,6 @@ public final class Encoder implements Visitor {
         extraSize1 = ((Integer) ast.D1.visit(this,frame));
         Frame frame2 = new Frame (frame,extraSize1);
         extraSize2 = ((Integer) ast.D2.visit(this,frame2));
-        //writeTableDetails(ast);
         return extraSize1 + extraSize2;
     }
 

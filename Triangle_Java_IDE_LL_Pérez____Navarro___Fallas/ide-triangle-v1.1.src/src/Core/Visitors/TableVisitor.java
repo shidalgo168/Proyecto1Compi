@@ -333,7 +333,7 @@ public class TableVisitor implements Visitor {
   //ssm_changes add method
   public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
       ast.D1.visit(this, null);
-       ast.D1.visit(this, null);
+       ast.D2.visit(this, null);
       return(null);
   }
   
