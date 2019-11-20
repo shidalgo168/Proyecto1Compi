@@ -289,23 +289,10 @@ public final class Encoder implements Visitor {
     //ssm_changes
     public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
         Frame frame = (Frame) o;
-        int extraSize = 0;
-
-        if (ast.E instanceof CharacterExpression) {
-            CharacterLiteral CL = ((CharacterExpression) ast.E).CL;
-            ast.entity = new KnownValue(Machine.characterSize,
-                    characterValuation(CL.spelling));
-        } else if (ast.E instanceof IntegerExpression) {
-            IntegerLiteral IL = ((IntegerExpression) ast.E).IL;
-            ast.entity = new KnownValue(Machine.integerSize,
-                    Integer.parseInt(IL.spelling));
-        } else {
-            int valSize = ((Integer) ast.E.visit(this, frame)).intValue();
-            ast.entity = new UnknownValue(valSize, frame.level, frame.size);
-            extraSize = valSize;
-        }
+        int extraSize = (Integer) ast.E.visit(this,frame);
+        ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
         writeTableDetails(ast);
-        return new Integer(extraSize);
+        return extraSize;
     }
     public Object visitFuncDeclaration(FuncDeclaration ast, Object o) {
         Frame frame = (Frame) o;
@@ -1092,30 +1079,28 @@ public final class Encoder implements Visitor {
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
         Frame frame = (Frame) o;
-        int jumpComparar,repetir, varControl, extraSize1, extraSize2;
+        int jumpAddr ,loopAddr, extraSize1, extraSize2;
         
         extraSize1 = (Integer) ast.E.visit(this, frame);
+       
+        Frame frame1 = new Frame(frame,extraSize1);
+        extraSize2 = (Integer) ast.D.visit(this,frame1);
         
-        Frame frame1 = new Frame(frame, extraSize1);
-        varControl = nextInstrAddr;
+        jumpAddr = nextInstrAddr;
+        emit (Machine.JUMPop,0,Machine.CBr,0);
         
-        extraSize2 = ((Integer) ast.D.visit(this, frame1)).intValue();
-        
-        jumpComparar = nextInstrAddr;
-        emit(Machine.JUMPop, 0, Machine.CBr, 0);
-        
-        Frame frame2 = new Frame(frame, extraSize2 + extraSize1);
-        repetir = nextInstrAddr;
+        loopAddr = nextInstrAddr;
+        Frame frame2 = new Frame(frame, extraSize1 + extraSize2); 
         ast.C.visit(this, frame2);
         
-        emit(Machine.CALLop, varControl, Machine.PBr, Machine.succDisplacement);
-        patch(jumpComparar,nextInstrAddr);
-        emit(Machine.LOADop,extraSize1 + extraSize2, Machine.STr, -2);
-        emit(Machine.CALLop,Machine.SBr, Machine.PBr, Machine.getDisplacement);
+        emit(Machine.CALLop, 0, Machine.PBr, 5);
         
-        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repetir);
-        emit(Machine.POPop,0,0,extraSize1+extraSize2);
-        
+        patch(jumpAddr,nextInstrAddr);
+        emit(Machine.LOADop,1, Machine.STr, -2);
+        emit(Machine.LOADop,1, Machine.STr, -2);
+        emit(Machine.CALLop, 0, Machine.PBr, 15);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        emit(Machine.POPop,2,0,0);
         return null;
     }
 }
