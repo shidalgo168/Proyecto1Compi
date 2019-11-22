@@ -735,59 +735,69 @@ public class XMLWriterVisitor implements Visitor{
 
     @Override
     public Object visitLoopUntilCommand(LoopUntilCommand ast, Object o) {
-        writeLineXML("<Until Command>");
+        writeLineXML("<UntilCommand>");
         qTabs++;
         ast.C.visit(this, null);
         ast.E.visit(this, null);
         qTabs--;
-        writeLineXML("</Until Command>");
+        writeLineXML("</UntilCommand>");
         return null;
     }
 
     @Override
     public Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o) {
+        writeLineXML("<DoWhileCommand>");
         qTabs++;
         ast.C.visit(this, null);
         ast.E.visit(this, null);
         qTabs--;
+        writeLineXML("</DoWhileCommand>");
         return null;
     }
 
     @Override
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o) {
+        writeLineXML("<DoUntilCommand>");
         qTabs++;
         ast.C.visit(this, null);
         ast.E.visit(this, null);        
         qTabs--;
+        writeLineXML("</DoUntilCommand>");
         return null; 
     }
 
     @Override
     public Object visitLoopForCommand(LoopForCommand ast, Object o) {
+        writeLineXML("<ForCommand>");
         qTabs++;
-        ast.C.visit(this, null);
         ast.D.visit(this, null);
-        ast.E.visit(this, null);        
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
         qTabs--;
+        writeLineXML("</ForCommand>");
         return null; 
     }
 
 
     @Override
     public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
+        writeLineXML("<LocalDeclaration>");
         qTabs++;
         ast.D1.visit(this, null);
         ast.D2.visit(this, null);
         qTabs--;
+        writeLineXML("</LocalDeclaration>");
         return null;
     }
 
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        writeLineXML("<RecursiveDeclaration>");
         qTabs++;
         ast.PF1.visit(this, null);
         ast.PF2.visit(this, null);
         qTabs--;
+        writeLineXML("</RecursiveDeclaration>");
         return null;
     }
     

@@ -6,6 +6,7 @@
 ! cada declaracion separada por la palabra reservada "and"
 
 let
+  var x : Integer;
   recursive
     func F() : Integer ~ 10
   and
@@ -13,8 +14,7 @@ let
         putint(x + T()) end
   and
     func T () : Integer ~ F()
-  end;
-  var x : Integer
+  end
 in
   x := F()
 end

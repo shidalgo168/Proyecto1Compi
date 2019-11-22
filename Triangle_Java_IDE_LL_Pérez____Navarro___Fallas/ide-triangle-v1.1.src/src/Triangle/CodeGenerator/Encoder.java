@@ -97,8 +97,14 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
+import java.util.ArrayList;
 
 public final class Encoder implements Visitor {
+    ArrayList<Object> astList = new ArrayList<>(); //ssm_changes - will contain all the ASTs left behind from the recursive identification
+    ArrayList<Integer> addrList = new ArrayList<>(); //ssm_changes - will contain the instruction addresses of the call operations from the ASTs in astList
+    ArrayList<Integer> frameList = new ArrayList<>(); //ssm_changes - will contain the frame level of the proc/func call in a recursive environment
+    boolean visitingRecursive = false; //ssm_changes - flag for the recursive visit
+    int nestedLevel = 0; //ssm_changes - value to know the current recursive AST level (depth)
 
     // Commands
     public Object visitAssignCommand(AssignCommand ast, Object o) {
@@ -300,7 +306,7 @@ public final class Encoder implements Visitor {
         int argsSize = 0, valSize = 0;
 
         emit(Machine.JUMPop, 0, Machine.CBr, 0);
-        ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr);
+        ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr); //Set and tag the start of the function
         writeTableDetails(ast);
         if (frame.level == Machine.maxRoutineLevel) {
             reporter.reportRestriction("can't nest routines more than 7 deep");
@@ -477,6 +483,13 @@ public final class Encoder implements Visitor {
             // static link, code address
             emit(Machine.LOADAop, 0, Machine.SBr, 0);
             emit(Machine.LOADAop, 0, Machine.PBr, displacement);
+        } else if (visitingRecursive){ //ssm_changes case added for recursive
+            astList.add(ast); //add the ast to the pending list
+            addrList.add(nextInstrAddr); //save where it has to do the patch
+            frameList.add(frame.level); //save the actual frame level to do the patch
+            // static link, code address
+            emit(Machine.LOADAop, 0, 0, 0); // write the pending load instructions
+            emit(Machine.LOADAop, 0, Machine.CBr, 0);
         }
         return new Integer(Machine.closureSize);
     }
@@ -497,6 +510,13 @@ public final class Encoder implements Visitor {
             // static link, code address
             emit(Machine.LOADAop, 0, Machine.SBr, 0);
             emit(Machine.LOADAop, 0, Machine.PBr, displacement);
+        } else if (visitingRecursive){ //ssm_changes case added for recursive
+            astList.add(ast); //add the ast to the pending list
+            addrList.add(nextInstrAddr); //save where it has to do the patch
+            frameList.add(frame.level); //save the actual frame level to do the patch
+            // static link, code address
+            emit(Machine.LOADAop, 0, 0, 0); // write the pending load instructions
+            emit(Machine.LOADAop, 0, Machine.CBr, 0);
         }
         return new Integer(Machine.closureSize);
     }
@@ -631,8 +651,14 @@ public final class Encoder implements Visitor {
         Frame frame = (Frame) o;
         if (ast.decl.entity instanceof KnownRoutine) {
             ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
-            emit(Machine.CALLop, displayRegister(frame.level, address.level),
+            if(visitingRecursive & astList.contains(ast)){
+                int astIndex = astList.indexOf(ast);
+                int callAddr = addrList.get(astIndex);
+                patch(callAddr, address.displacement, displayRegister(frame.level, address.level));
+            } else{
+                emit(Machine.CALLop, displayRegister(frame.level, address.level),
                     Machine.CBr, address.displacement);
+            }
         } else if (ast.decl.entity instanceof UnknownRoutine) {
             ObjectAddress address = ((UnknownRoutine) ast.decl.entity).address;
             emit(Machine.LOADop, Machine.closureSize, displayRegister(frame.level,
@@ -647,6 +673,11 @@ public final class Encoder implements Visitor {
             int displacement = ((EqualityRoutine) ast.decl.entity).displacement;
             emit(Machine.LOADLop, 0, 0, frame.size / 2);
             emit(Machine.CALLop, Machine.SBr, Machine.PBr, displacement);
+        } else if (visitingRecursive){ //ssm_changes case added for recursive
+            astList.add(ast); //add the ast to the pending list
+            addrList.add(nextInstrAddr); //save where it has to do the patch
+            frameList.add(frame.level); //save the actual frame level to do the patch
+            emit(Machine.CALLop, 0, Machine.CBr, 0); // write the pending call instruction
         }
         return null;
     }
@@ -675,6 +706,11 @@ public final class Encoder implements Visitor {
             int displacement = ((EqualityRoutine) ast.decl.entity).displacement;
             emit(Machine.LOADLop, 0, 0, frame.size / 2);
             emit(Machine.CALLop, Machine.SBr, Machine.PBr, displacement);
+        } else if (visitingRecursive){ //ssm_changes case added for recursive
+            astList.add(ast); //add the ast to the pending list
+            addrList.add(nextInstrAddr); //save where it has to do the patch
+            frameList.add(frame.level); //save the actual frame level to do the patch
+            emit(Machine.CALLop, 0, Machine.CBr, 0); // write the pending call instruction
         }
         return null;
     }
@@ -869,6 +905,13 @@ public final class Encoder implements Visitor {
     private void patch(int addr, int d) {
         Machine.code[addr].d = d;
     }
+    
+    // ssm_changes - overloading patch(addr, d)
+    // Patches the d-field and n-field of the instruction at address addr.
+    private void patch(int addr, int d, int n) {
+        Machine.code[addr].d = d;
+        Machine.code[addr].n = n;
+    }
 
     // DATA REPRESENTATION
     public int characterValuation(String spelling) {
@@ -1008,7 +1051,7 @@ public final class Encoder implements Visitor {
         }
     }
     
-
+    // ssm_changes - implementation of new visit methods
     @Override
     public Object visitInitDeclaration(InitDeclaration ast, Object o) {
         Frame frame = (Frame) o;
@@ -1030,7 +1073,73 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-        return null;
+        Frame frame = (Frame) o;
+        int extraSize1, extraSize2;
+        visitingRecursive = true;
+        nestedLevel++; // indicates how deep is the current recursive ast
+        extraSize1 = ((Integer) ast.PF1.visit(this, frame)).intValue();
+        Frame frame1 = new Frame(frame, extraSize1);
+        extraSize2 = ((Integer) ast.PF2.visit(this, frame1)).intValue();
+        nestedLevel--;
+        if(nestedLevel==0){ //when is in the root node
+            visitingRecursive = false;
+            visitRemainingASTs();
+        }
+        return new Integer(extraSize1 + extraSize2);
+    }
+    
+    //auxiliar method, visits each pending ast and finish the instructions displacements
+    private void visitRemainingASTs(){
+        int astIndex = 0;
+        for(Object currentElement : astList){
+            if(currentElement instanceof Identifier){
+                Identifier ast = (Identifier) currentElement;
+                if (ast.decl.entity instanceof KnownRoutine) {
+                    ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
+                    int callAddr = addrList.get(astIndex);
+                    int frameLvl = frameList.get(astIndex);
+                    patch(callAddr, address.displacement, displayRegister(frameLvl, address.level));
+                } else {
+                    //error - undeclared routine was called
+                }
+            } else if (currentElement instanceof Operator){
+                Operator ast = (Operator) currentElement;
+                if (ast.decl.entity instanceof KnownRoutine) {
+                    ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
+                    int callAddr = addrList.get(astIndex);
+                    int frameLvl = frameList.get(astIndex);
+                    patch(callAddr, address.displacement, displayRegister(frameLvl, address.level));
+                } else {
+                    //error - undeclared routine was called
+                }
+            } else if (currentElement instanceof ProcActualParameter){
+                ProcActualParameter ast = (ProcActualParameter) currentElement;
+                if (ast.I.decl.entity instanceof KnownRoutine) {
+                    ObjectAddress address = ((KnownRoutine) ast.I.decl.entity).address;
+                    int loadAddr = addrList.get(astIndex);
+                    int frameLvl = frameList.get(astIndex);
+                    patch(loadAddr, 0, displayRegister(frameLvl, address.level));
+                    patch(loadAddr + 1, address.displacement);
+                } else {
+                    //error - undeclared routine was called
+                }
+            } else { //FuncActualParameter
+                FuncActualParameter ast = (FuncActualParameter) currentElement;
+                if (ast.I.decl.entity instanceof KnownRoutine) {
+                    ObjectAddress address = ((KnownRoutine) ast.I.decl.entity).address;
+                    int loadAddr = addrList.get(astIndex);
+                    int frameLvl = frameList.get(astIndex);
+                    patch(loadAddr, 0, displayRegister(frameLvl, address.level));
+                    patch(loadAddr + 1, address.displacement);
+                } else {
+                    //error - undeclared routine was called
+                }
+            }
+            astIndex++;
+        }
+        astList.clear();
+        addrList.clear();
+        frameList.clear();
     }
 
     @Override
