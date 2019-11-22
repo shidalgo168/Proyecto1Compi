@@ -69,6 +69,7 @@ import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
+import Triangle.AbstractSyntaxTrees.TypeDenoter;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
@@ -85,6 +86,7 @@ import Triangle.CodeGenerator.TypeRepresentation;
 import Triangle.CodeGenerator.UnknownAddress;
 import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
+import Triangle.StdEnvironment;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -302,8 +304,26 @@ public class TableVisitor implements Visitor {
       return(null);
   }
     //ssm_changes
-    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
-      return(visitConstDeclaration(new ConstDeclaration(ast.I, ast.E, ast.getPosition()),o));
+    public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {  
+     String name = ast.I.spelling;
+      String type = "N/A";
+
+        int size = (ast.entity!=null?ast.entity.size:0);
+        int level = -1;
+        int displacement = -1;
+        int value = -1;
+      
+        if (ast.entity instanceof KnownAddress) {
+            type = "KnownAddress";
+            level = ((KnownAddress)ast.entity).address.level;
+            displacement = ((KnownAddress)ast.entity).address.displacement;
+        }
+        addIdentifier(name, type, size, level, displacement, value);
+
+      ast.E.visit(this, null);
+      ast.I.visit(this, null);
+
+      return(null);
     }
   
   
@@ -661,6 +681,7 @@ public class TableVisitor implements Visitor {
   // <editor-fold defaultstate="collapsed" desc=" Table Creation Methods ">
   // Programs
   public Object visitProgram(Program ast, Object o) { 
+      System.out.println("entro a visit program");
       ast.C.visit(this, null);
       
       return(null);
