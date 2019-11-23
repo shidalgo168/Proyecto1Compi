@@ -325,15 +325,23 @@ public class TableVisitor implements Visitor {
   
   //ssm_changes add method
   public Object visitInitDeclaration(InitDeclaration ast, Object o) {
-      //beyond the scope of project TODO
-      ast.E.visit(this,null);
+      try{
+        addIdentifier(ast.I.spelling, "KnownAddress", 
+                (ast.entity!=null?ast.entity.size:0),
+                ((KnownAddress)ast.entity).address.level,
+                ((KnownAddress)ast.entity).address.displacement, -1);
+      } catch (NullPointerException e) { }
+      
+      ast.E.visit(this, null);
+      ast.I.visit(this, null);
+
       return(null);
   }
   
   //ssm_changes add method
   public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
       ast.D1.visit(this, null);
-       ast.D2.visit(this, null);
+      ast.D2.visit(this, null);
       return(null);
   }
   
@@ -354,7 +362,9 @@ public class TableVisitor implements Visitor {
   
   //ssm_changes add method
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-      //beyond the scope of project TODO
+      ast.PF1.visit(this, null);
+      ast.PF2.visit(this, null);
+      
       return(null);
   }
   

@@ -110,8 +110,7 @@ public final class Encoder implements Visitor {
     public Object visitAssignCommand(AssignCommand ast, Object o) {
         Frame frame = (Frame) o;
         Integer valSize = (Integer) ast.E.visit(this, frame);
-        encodeStore(ast.V, new Frame(frame, valSize.intValue()),
-                valSize.intValue());
+        encodeStore(ast.V, new Frame(frame, valSize), valSize);
         return null;
     }
 
@@ -292,6 +291,7 @@ public final class Encoder implements Visitor {
         writeTableDetails(ast);
         return new Integer(extraSize);
     }
+    
     //ssm_changes
     public Object visitConstDeclarationFor(ConstDeclarationFor ast, Object o) {   
         Frame frame = (Frame) o;
@@ -320,8 +320,6 @@ public final class Encoder implements Visitor {
         patch(jumpAddr, nextInstrAddr);
         return new Integer(0);
     }
-    
-    //ssm_changes add method TODO
   
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
@@ -651,14 +649,8 @@ public final class Encoder implements Visitor {
         Frame frame = (Frame) o;
         if (ast.decl.entity instanceof KnownRoutine) {
             ObjectAddress address = ((KnownRoutine) ast.decl.entity).address;
-            if(visitingRecursive & astList.contains(ast)){
-                int astIndex = astList.indexOf(ast);
-                int callAddr = addrList.get(astIndex);
-                patch(callAddr, address.displacement, displayRegister(frame.level, address.level));
-            } else{
-                emit(Machine.CALLop, displayRegister(frame.level, address.level),
+            emit(Machine.CALLop, displayRegister(frame.level, address.level),
                     Machine.CBr, address.displacement);
-            }
         } else if (ast.decl.entity instanceof UnknownRoutine) {
             ObjectAddress address = ((UnknownRoutine) ast.decl.entity).address;
             emit(Machine.LOADop, Machine.closureSize, displayRegister(frame.level,
@@ -1055,8 +1047,16 @@ public final class Encoder implements Visitor {
     @Override
     public Object visitInitDeclaration(InitDeclaration ast, Object o) {
         Frame frame = (Frame) o;
+        int pushAddr = nextInstrAddr;
+        emit(Machine.PUSHop, 0, 0, 0);
         int extraSize = (Integer) ast.E.visit(this,frame);
+        patch(pushAddr, extraSize);
         ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+        
+        ObjectAddress address = ((KnownAddress) ast.entity).address;
+        emit(Machine.STOREop, extraSize, displayRegister(frame.level,
+                address.level), address.displacement);
+
         return extraSize;
     }
     
@@ -1077,15 +1077,15 @@ public final class Encoder implements Visitor {
         int extraSize1, extraSize2;
         visitingRecursive = true;
         nestedLevel++; // indicates how deep is the current recursive ast
-        extraSize1 = ((Integer) ast.PF1.visit(this, frame)).intValue();
+        extraSize1 = ((Integer) ast.PF1.visit(this, frame));
         Frame frame1 = new Frame(frame, extraSize1);
-        extraSize2 = ((Integer) ast.PF2.visit(this, frame1)).intValue();
+        extraSize2 = ((Integer) ast.PF2.visit(this, frame1));
         nestedLevel--;
         if(nestedLevel==0){ //when is in the root node
             visitingRecursive = false;
             visitRemainingASTs();
         }
-        return new Integer(extraSize1 + extraSize2);
+        return extraSize1 + extraSize2;
     }
     
     //auxiliar method, visits each pending ast and finish the instructions displacements

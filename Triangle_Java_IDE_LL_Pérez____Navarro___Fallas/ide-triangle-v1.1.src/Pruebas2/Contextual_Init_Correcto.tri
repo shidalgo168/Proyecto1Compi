@@ -2,8 +2,10 @@
 !"var" Identifier "init" Expression
 
 let
-  var x init
+  var z : Integer;
+  var x init 
           let const y~4 in 5+y end
 in
+  z := 3;
   putint(x)
 end
