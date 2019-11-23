@@ -1213,14 +1213,16 @@ public final class Encoder implements Visitor {
         Frame frame2 = new Frame(frame, extraSize1 + extraSize2); 
         ast.C.visit(this, frame2);
         
-        emit(Machine.CALLop, 0, Machine.PBr, 5);
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.succDisplacement);
         
         patch(jumpAddr,nextInstrAddr);
         emit(Machine.LOADop,1, Machine.STr, -2);
         emit(Machine.LOADop,1, Machine.STr, -2);
-        emit(Machine.CALLop, 0, Machine.PBr, 15);
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.geDisplacement);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
         emit(Machine.POPop,2,0,0);
+        
+        writeTableDetails(ast);
         return null;
     }
 }
