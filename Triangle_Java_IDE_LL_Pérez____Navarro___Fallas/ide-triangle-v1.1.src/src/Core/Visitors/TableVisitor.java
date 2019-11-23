@@ -346,10 +346,14 @@ public class TableVisitor implements Visitor {
   //ssm_changes add method
   public Object visitInitDeclaration(InitDeclaration ast, Object o) {
       try{
+        int value = -1;
+        if (ast.E instanceof IntegerExpression) {
+            value = Integer.parseInt(((IntegerExpression) ast.E).IL.spelling);
+        }
         addIdentifier(ast.I.spelling, "KnownAddress", 
                 (ast.entity!=null?ast.entity.size:0),
                 ((KnownAddress)ast.entity).address.level,
-                ((KnownAddress)ast.entity).address.displacement, -1);
+                ((KnownAddress)ast.entity).address.displacement, value);
       } catch (NullPointerException e) { }
       
       ast.E.visit(this, null);
