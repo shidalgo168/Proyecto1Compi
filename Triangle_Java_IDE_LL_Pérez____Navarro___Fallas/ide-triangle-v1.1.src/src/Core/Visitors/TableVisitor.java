@@ -349,6 +349,8 @@ public class TableVisitor implements Visitor {
         int value = -1;
         if (ast.E instanceof IntegerExpression) {
             value = Integer.parseInt(((IntegerExpression) ast.E).IL.spelling);
+        } else if (ast.E instanceof CharacterExpression){
+            value = ((CharacterExpression) ast.E).CL.spelling.charAt(1);
         }
         addIdentifier(ast.I.spelling, "KnownAddress", 
                 (ast.entity!=null?ast.entity.size:0),
